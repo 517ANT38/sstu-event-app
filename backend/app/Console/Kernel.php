@@ -2,17 +2,21 @@
 
 namespace App\Console;
 
+use App\Services\NewsParser;
+use Exception;
+use GrahamCampbell\ResultType\Error;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\ErrorHandler\ThrowableUtils;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * Define the application's command schedule.
-     */
+
+
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+
     }
 
     /**
