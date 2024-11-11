@@ -155,6 +155,8 @@ return [
     |
     */
 
+    'mainUrl' => env('MAIN_URL'),
+
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*
          * Package Service Providers...
