@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use App\Services\NewsService;
 use App\Services\NewsParserService;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
 class GetAndSetToStorageNews extends Command

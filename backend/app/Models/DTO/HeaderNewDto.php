@@ -8,4 +8,12 @@ class HeaderNewDto{
         public string $title,
         public string $url
     ){}
+    public static function transform(mixed $args)
+    {
+        return new self(
+            $args['imgUrl'],
+            $args['title'],
+            $args['url']
+        );
+    }
 }

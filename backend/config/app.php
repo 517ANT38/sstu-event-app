@@ -144,6 +144,12 @@ return [
         // 'store' => 'redis',
     ],
 
+    'redis' => [
+
+    'client' => env('REDIS_CLIENT', 'predis'),
+
+    // ...
+    ],
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
