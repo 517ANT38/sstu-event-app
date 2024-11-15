@@ -39,6 +39,7 @@ class GetAndSetToStorageNews extends Command
         $mainUrl = Config("app.mainUrl");
         foreach($this->mapSiteUrls as $siteName => $siteUrl){
             $res = Http::get($siteUrl);
+            if(!$res->ok())continue;
             $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($res->body(),
                 $siteName == "sstu"?$mainUrl:$siteUrl);
             $service->setNews($siteName,$newsHeaders);

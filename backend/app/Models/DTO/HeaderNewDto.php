@@ -8,7 +8,7 @@ class HeaderNewDto{
         public string $title,
         public string $url
     ){}
-    public static function transform(mixed $args)
+    public static function transform(array $args)
     {
         return new self(
             $args['imgUrl'],

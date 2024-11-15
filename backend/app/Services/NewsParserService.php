@@ -4,7 +4,6 @@ namespace App\Services;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Models\DTO\NewsDto;
 use App\Models\DTO\HeaderNewDto;
-use Illuminate\Support\Facades\Config;
 class NewsParserService{
 
     public function parseAllUrlFromHeadersNews(string $html,string $mainUrl) {
@@ -23,7 +22,7 @@ class NewsParserService{
         $title = $crw->filter('.block > h1')->text();
         $imgsUrls = $crw->filter('.news-detail img')
             ->each(fn(Crawler $node, $i)=>$node->image()->getUri());
-        $desc = implode('\n', $crw->filter('.news-detail > p')
+        $desc = implode('\n', $crw->filter('.news-detail p')
             ->each(fn(Crawler $node, $i)=>$node->text()));
         $date = $crw->filter('.news-detail div.date>span')->text();
         return new NewsDto($imgsUrls,$title,$desc,$date);
