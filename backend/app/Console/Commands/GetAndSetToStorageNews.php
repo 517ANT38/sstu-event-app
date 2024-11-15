@@ -42,8 +42,11 @@ class GetAndSetToStorageNews extends Command
             if(!$res->ok())continue;
             $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($res->body(),
                 $siteName == "sstu"?$mainUrl:$siteUrl);
-            $service->setNews($siteName,$newsHeaders);
+            $service->addHeadersNews($siteName,$newsHeaders);
 
+            foreach($newsHeaders as $head){
+                $head->
+            }
         }
 
     }

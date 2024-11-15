@@ -9,4 +9,14 @@ final class NewsDto{
         public string $desc,
         public string $date
     ){}
+    public static function transform(array $args)
+    {
+        return new self(
+            $args['imgUrls'],
+            $args['title'],
+            $args['desc'],
+            $args['date']
+        );
+    }
 }
+

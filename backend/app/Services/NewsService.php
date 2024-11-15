@@ -1,28 +1,24 @@
 <?php
 namespace App\Services;
-
-use App\Models\DTO\HeaderNewDto;
-use Illuminate\Support\Facades\Redis;
-use App\Services\NewsParserService;
-use Illuminate\Support\Facades\Http;
-
+use App\Repositories\NewsRepositoryInterface;
+use App\Models\DTO\NewsDto;
 class NewsService{
 
-    public function __construct(private NewsParserService $parser){}
+    public function __construct(private NewsRepositoryInterface $repo){}
 
-    public function setNews(string $siteName, array $news){
-        Redis::set($siteName,json_encode($news));
+    public function addHeadersNews(string $siteName, array $news){
+        $this->repo->addHeadersNews($siteName,$news);
     }
 
-    public function getNews(string $siteName){
-        $news = json_decode(Redis::get($siteName),true);
-        return array_map(fn($item)=>HeaderNewDto::transform($item),$news);
+    public function getHeadersNews(string $siteName){
+        return $this->repo->getHeadersNews($siteName);
     }
 
-    public function getNew(string $url){
-        $res = Http::get($url);
-        $res->throw();
-        return $this->parser->parseOneNew($res->body(),Config("app.mainUrl"));
+    public function getNew(string $siteName,string $url){
+        return $this->repo->getNew($siteName,$url);
     }
 
+    public function setNew(string $siteName,string $url,NewsDto $dto){
+        $this->repo->setNew($siteName,$url,$dto);
+    }
 }
