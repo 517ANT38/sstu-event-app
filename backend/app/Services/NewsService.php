@@ -14,11 +14,15 @@ class NewsService{
         return $this->repo->getHeadersNews($siteName);
     }
 
-    public function getNew(string $siteName,string $url){
-        return $this->repo->getNew($siteName,$url);
+    public function getNew(string $url){
+        return $this->repo->getNew($url);
     }
 
-    public function setNew(string $siteName,string $url,NewsDto $dto){
-        $this->repo->setNew($siteName,$url,$dto);
+    public function setNew(string $url,NewsDto $dto){
+        $this->repo->setNew($url,$dto);
     }
+
+    public function deleteHeaders(string $siteName){$this->repo->delete($siteName);}
+
+    public function deleteNew(string $url){$this->repo->delete($url);}
 }

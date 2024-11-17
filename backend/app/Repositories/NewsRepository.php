@@ -4,8 +4,6 @@ namespace App\Repositories;
 use App\Models\DTO\HeaderNewDto;
 use App\Models\DTO\NewsDto;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Collection;
-
 
 class NewsRepository implements NewsRepositoryInterface{
 
@@ -13,18 +11,21 @@ class NewsRepository implements NewsRepositoryInterface{
         Redis::rPush($siteName, array_map(fn($it)=>json_encode($it),$news));
     }
 
-    public function getHeadersNews(string $siteName,int $start=0,int $end=-1):Collection{
+    public function getHeadersNews(string $siteName,int $start=0,int $end=-1):array{
         $news = json_decode(Redis::lRange($siteName,$start,$end),true);
-        return new Collection(array_map(fn($item)=>HeaderNewDto::transform($item),$news));
+        return array_map(fn($item)=>HeaderNewDto::transform($item),$news);
     }
 
-    public function getNew(string $siteName,string $url):NewsDto{
-        $new = json_decode(Redis::hGet($siteName,$url),true);
+    public function getNew(string $url):NewsDto{
+        $new = json_decode(Redis::get($url),true);
         return NewsDto::transform($new);
     }
 
-    public function setNew(string $siteName,string $url,NewsDto $new):void{
-        Redis::hSet($siteName,$url,json_encode($new));
+    public function setNew(string $url,NewsDto $new):void{
+        Redis::set($url,json_encode($new));
     }
 
+    public function delete(string $key): void {
+        Redis::unlink($key);
+    }
 }
