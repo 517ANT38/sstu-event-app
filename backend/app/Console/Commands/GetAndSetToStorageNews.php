@@ -33,16 +33,22 @@ class GetAndSetToStorageNews extends Command
 
     }
 
-    public function handle(NewsParserService $newsparser)
+    public function handle(NewsParserService $newsparser,NewsService $service)
     {
 
         foreach($this->mapSiteUrls as $siteName => $siteUrl){
-            $res = Http::get($siteUrl);
-            if(!$res->ok())continue;
+            $resPageNews = Http::get($siteUrl);
+            if(!$resPageNews->ok())continue;
             $rootUrl = $siteName == 'sstu' ? Config("app.mainUrl") : $siteUrl;
-            $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($res->body(),$rootUrl);
-            Redis::set($siteName,json_encode($newsHeaders));
-
+            $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($resPageNews->body(),$rootUrl);
+            $service->deleteHeaders($siteName);
+            $service->addHeadersNews($siteName,$newsHeaders);
+            foreach ($newsHeaders as $newHeader) {
+                $resNewPage = Http::get($newHeader->url);
+                if(!$resPageNews->ok())continue;
+                $newDto = $newsparser->parseOneNew($resNewPage->body());
+                $service->setNew($newHeader->url,$newDto);
+            }
         }
 
     }

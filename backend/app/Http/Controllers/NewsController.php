@@ -12,7 +12,7 @@ class NewsController extends Controller
 
     public function showNewsHeaders(string $universityСode)
     {
-        return response()->json($this->service->getNews($universityСode));
+        return response()->json($this->service->getHeadersNews($universityСode));
 
     }
     public function showNew(string $url)

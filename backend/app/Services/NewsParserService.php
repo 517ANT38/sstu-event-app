@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Services;
+use Exception;
 use App\Models\DTO\NewsDto;
 use App\Models\DTO\HeaderNewDto;
-use Error;
+use App\Exceptions\NotMatchesException;
 
 class NewsParserService{
 
@@ -28,7 +29,7 @@ class NewsParserService{
         $matchesImgs = $this->parseWithRegexMany(NewsParserService::$PATTERN_IMG_GET_ALL_NEWS,$html,1,"imgs");
         $countMatchs = count($matchesUrls);
         if ($countMatchs != count($matchesTitles) || $countMatchs!= count($matchesImgs)) {
-            throw new Error("Not eq count matches in field dto");
+            throw new NotMatchesException("Not eq count matches in field dto");
         }
         $headers = [];
         for ($i=0; $i < $countMatchs; $i++) {
@@ -46,7 +47,7 @@ class NewsParserService{
         if(preg_match_all($regx,$html,$matches)){
             return $matches[$gIndex];
         }
-        throw new Error("Not matches $desc");
+        throw new NotMatchesException("Not matches $desc");
 
     }
 
@@ -54,7 +55,7 @@ class NewsParserService{
         if (preg_match($regx,$html,$matches)) {
             return $matches[1];
         }
-        throw new Error("Not matches $desc");
+        throw new NotMatchesException("Not matches $desc");
     }
 
     public function parseOneNew(string $html){
