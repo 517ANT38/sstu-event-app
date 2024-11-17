@@ -7,7 +7,7 @@ use App\Services\NewsService;
 use App\Services\NewsParserService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Redis;
 class GetAndSetToStorageNews extends Command
 {
     /**
@@ -33,20 +33,16 @@ class GetAndSetToStorageNews extends Command
 
     }
 
-    public function handle(NewsParserService $newsparser,NewsService $service)
+    public function handle(NewsParserService $newsparser)
     {
 
-        $mainUrl = Config("app.mainUrl");
         foreach($this->mapSiteUrls as $siteName => $siteUrl){
             $res = Http::get($siteUrl);
             if(!$res->ok())continue;
-            $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($res->body(),
-                $siteName == "sstu"?$mainUrl:$siteUrl);
-            $service->addHeadersNews($siteName,$newsHeaders);
+            $rootUrl = $siteName == 'sstu' ? Config("app.mainUrl") : $siteUrl;
+            $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($res->body(),$rootUrl);
+            Redis::set($siteName,json_encode($newsHeaders));
 
-            foreach($newsHeaders as $head){
-                $head->
-            }
         }
 
     }
