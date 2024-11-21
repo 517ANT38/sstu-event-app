@@ -46,6 +46,7 @@ class GetAndSetToStorageNews extends Command
             foreach ($newsHeaders as $newHeader) {
                 $resNewPage = Http::get($newHeader->url);
                 if(!$resPageNews->ok())continue;
+                print($newHeader->url."\n\r\n\r");
                 $newDto = $newsparser->parseOneNew($resNewPage->body());
                 $service->setNew($newHeader->url,$newDto);
             }

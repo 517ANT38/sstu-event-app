@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\RequestEventController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('news/{universityСode}',[NewsController::class,'showNewsHeaders']);
 Route::get('news/url/{url?}',[NewsController::class,'showNew'])->where("url","(.*)");
+Route::post("events/create",[RequestEventController::class,'create']);
+Route::post("events/",[RequestEventController::class,'show']);

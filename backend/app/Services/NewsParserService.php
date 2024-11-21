@@ -13,8 +13,8 @@ class NewsParserService{
     private static string $PATTERN_IMG_GET_ALL_NEWS = '/<div\s+class=["\']media["\'].*?>\s*<img\s+[^>]*?class=["\']media-object["\'][^>]*?src=["\'](.*?)["\']/si';
     private static string $PATTERN_GET_IMGS = '/<div\s+class=["\'](photo|news-detail).*?["\'][^>]*>.*?<img\s+[^>]*?src=["\'](.*?)["\']/si';
     private static string $PATTERN_GET_TITLE ='/<div\s+class=["\']block["\'].*?>\s*<h1.*?>(.*?)<\/h1>/si';
-    private static string $PATTERN_GET_TEXTS = '/<(p|blockquote) style="text-align: justify;">(.*?)<\/\1>/si';
-    private static string $PATTERN_GET_DATE = '/<span>(\d{2}\.\d{2}\.\d{4})<\/span>/si';
+    private static string $PATTERN_GET_TEXTS = '/<(div) (style="text-align: justify;"|class="news-detail*")>(.*?)<\/\1>/si';
+    private static string $PATTERN_GET_DATE = '/<(span)>(\d{2}\.\d{2}\.\d{4})/si';
 
     private string $mainUrl;
 
@@ -51,9 +51,9 @@ class NewsParserService{
 
     }
 
-    private function parseWithRegexOne(string $regx,string $html,string $desc){
+    private function parseWithRegexOne(string $regx,string $html,string $desc,int $i=1){
         if (preg_match($regx,$html,$matches)) {
-            return $matches[1];
+            return $matches[$i];
         }
         throw new NotMatchesException("Not matches $desc");
     }
@@ -62,10 +62,10 @@ class NewsParserService{
         $title = $this->parseWithRegexOne(NewsParserService::$PATTERN_GET_TITLE,$html,"title");
         $imgs = $this->parseWithRegexMany(NewsParserService::$PATTERN_GET_IMGS,$html,2,"imgs");
         $imgs = array_map(fn($item)=>$this->mainUrl.$item,$imgs);
-        $texts = $this->parseWithRegexMany(NewsParserService::$PATTERN_GET_TEXTS,$html,2,"texts");
-        $texts = array_map(fn($it)=>strip_tags($it),$texts);
-        $date = $this->parseWithRegexOne(NewsParserService::$PATTERN_GET_DATE,$html,"date");
-        return new NewsDto($imgs,$title,implode("\n",$texts),$date);
+        $text = $this->parseWithRegexOne(NewsParserService::$PATTERN_GET_TEXTS,$html,"texts",3);
+        $text = strip_tags($text);
+        $date = $this->parseWithRegexOne(NewsParserService::$PATTERN_GET_DATE,$html,"date",2);
+        return new NewsDto($imgs,$title,$text,$date);
 
     }
 

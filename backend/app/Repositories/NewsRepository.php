@@ -26,6 +26,6 @@ class NewsRepository implements NewsRepositoryInterface{
     }
 
     public function delete(string $key): void {
-        Redis::unlink($key);
+        Redis::del($key);
     }
 }
