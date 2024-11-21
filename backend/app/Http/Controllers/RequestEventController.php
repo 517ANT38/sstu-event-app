@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\RequestEventRequest;
 use App\Services\EventRequestService;
-
+use Symfony\Component\HttpFoundation\Response;
 class RequestEventController extends Controller
 {
 
@@ -16,7 +16,7 @@ class RequestEventController extends Controller
     {
         $res  = $request->validated();
         $this->service->save($res);
-        return response()->status(201);
+        return response()->noContent(Response::HTTP_CREATED);
     }
 
 
