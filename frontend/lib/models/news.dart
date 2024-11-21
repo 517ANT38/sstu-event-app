@@ -4,7 +4,7 @@ class NewsModel{
   final DateTime date;
   final List<String> imgURLs;
 
-  const NewsModel({
+  NewsModel({
     required this.title,
     required this.description,
     required this.date,
