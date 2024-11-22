@@ -22,6 +22,7 @@ if [ $# -gt 0 ]; then
         exec gosu $WWWUSER "$@"
     fi
 else
-    echo $SUPERVISOR_PHP_SHEDULER_START | crontab -
+    echo "$SUPERVISOR_PHP_SHEDULER_START" | crontab -
+    exec $SUPERVISOR_PHP_APP_COMMAND
     exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi
