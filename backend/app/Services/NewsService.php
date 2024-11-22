@@ -20,7 +20,7 @@ class NewsService{
         if($new == null){
             throw new NewNotFoundException($url);
         }
-        return null;
+        return $new;
     }
 
     public function setNew(string $url,NewsDto $dto){
