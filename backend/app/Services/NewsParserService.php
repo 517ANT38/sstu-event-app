@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services;
-use Exception;
 use App\Models\DTO\NewsDto;
 use App\Models\DTO\HeaderNewDto;
 use App\Exceptions\NotMatchesException;
