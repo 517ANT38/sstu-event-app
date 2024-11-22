@@ -7,8 +7,7 @@ WORKDIR /var/www/html
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 ENV SUPERVISOR_PHP_COMMAND="/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=80"
-ENV SUPERVISOR_PHP_SHEDULER_START="* * * * * /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan schedule:run"
-ENV SUPERVISOR_PHP_APP_COMMAND="/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan app:get-and-set-to-storage-news"
+ENV SUPERVISOR_PHP_INIT_COMMAND="/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan app:get-and-set-to-storage-news"
 ENV SUPERVISOR_PHP_USER="sail"
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -35,13 +34,15 @@ RUN apt-get update && apt-get upgrade -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.3
-
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.3/cli/conf.d/99-sail.ini
+COPY crontab /etc/cron.d/laravel-cron
+RUN chmod 0644 /etc/cron.d/laravel-cron \
+    && crontab /etc/cron.d/laravel-cron
 RUN chmod +x /usr/local/bin/start-container
 
 ENTRYPOINT ["start-container"]
