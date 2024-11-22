@@ -22,7 +22,7 @@ class RequestEventController extends Controller
 
     public function show()
     {
-        return response()->json($this->service->show(),201);
+        return response()->json($this->service->show());
     }
 
 }

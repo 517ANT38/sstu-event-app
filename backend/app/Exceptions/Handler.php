@@ -2,29 +2,30 @@
 
 namespace App\Exceptions;
 
+use Psr\Log\LogLevel;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\ConnectionException;
+use App\Exceptions\NotMatchesException;
+use App\Exceptions\NewNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    /**
-     * The list of the inputs that are never flashed to the session on validation exceptions.
-     *
-     * @var array<int, string>
-     */
-    protected $dontFlash = [
-        'current_password',
-        'password',
-        'password_confirmation',
+    protected $levels = [
+        NotMatchesException::class => LogLevel::CRITICAL,
+        RequestException::class => LogLevel::CRITICAL,
+        ConnectionException::class => LogLevel::CRITICAL
+
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+
+        $this->renderable(function (NewNotFoundException $e) {
+            $url = $e->getUrl();
+            return response()->json([
+                'message' => "New not found by url=$url."
+            ],404);
         });
     }
 }

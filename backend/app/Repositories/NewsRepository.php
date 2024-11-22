@@ -4,7 +4,6 @@ namespace App\Repositories;
 use App\Models\DTO\HeaderNewDto;
 use App\Models\DTO\NewsDto;
 use Illuminate\Support\Facades\Redis;
-
 class NewsRepository implements NewsRepositoryInterface{
 
     public function addHeadersNews(string $siteName, array $news):void{
@@ -12,13 +11,15 @@ class NewsRepository implements NewsRepositoryInterface{
     }
 
     public function getHeadersNews(string $siteName,int $start=0,int $end=-1):array{
-        $news = json_decode(Redis::lRange($siteName,$start,$end),true);
-        return array_map(fn($item)=>HeaderNewDto::transform($item),$news);
+        $news = Redis::lRange($siteName,$start,$end);
+        return array_map(fn($item)=>HeaderNewDto::transform(json_decode($item,true)),$news);
     }
 
-    public function getNew(string $url):NewsDto{
+    public function getNew(string $url):?NewsDto{
         $new = json_decode(Redis::get($url),true);
-        return NewsDto::transform($new);
+        if($new != null)
+            return NewsDto::transform($new);
+        return null;
     }
 
     public function setNew(string $url,NewsDto $new,int $ttl = 21600):void{

@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Repositories\NewsRepositoryInterface;
 use App\Models\DTO\NewsDto;
+use App\Exceptions\NewNotFoundException;
 class NewsService{
 
     public function __construct(private NewsRepositoryInterface $repo){}
@@ -15,7 +16,11 @@ class NewsService{
     }
 
     public function getNew(string $url){
-        return $this->repo->getNew($url);
+        $new  = $this->repo->getNew($url);
+        if($new == null){
+            throw new NewNotFoundException($url);
+        }
+        return null;
     }
 
     public function setNew(string $url,NewsDto $dto){

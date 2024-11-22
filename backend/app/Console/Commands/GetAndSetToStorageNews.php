@@ -2,12 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\NewsService;
+use Illuminate\Console\Command;
+use App\Http\Clients\HttpClient;
 use App\Services\NewsParserService;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Redis;
 class GetAndSetToStorageNews extends Command
 {
     /**
@@ -33,21 +32,18 @@ class GetAndSetToStorageNews extends Command
 
     }
 
-    public function handle(NewsParserService $newsparser,NewsService $service)
+    public function handle(NewsParserService $newsparser,NewsService $service,HttpClient $client)
     {
 
         foreach($this->mapSiteUrls as $siteName => $siteUrl){
-            $resPageNews = Http::get($siteUrl);
-            if(!$resPageNews->ok())continue;
+            $resPageNews = $client->get($siteUrl);
             $rootUrl = $siteName == 'sstu' ? Config("app.mainUrl") : $siteUrl;
-            $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($resPageNews->body(),$rootUrl);
+            $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($resPageNews,$rootUrl);
             $service->deleteHeaders($siteName);
             $service->addHeadersNews($siteName,$newsHeaders);
             foreach ($newsHeaders as $newHeader) {
-                $resNewPage = Http::get($newHeader->url);
-                if(!$resPageNews->ok())continue;
-                print($newHeader->url."\n\r\n\r");
-                $newDto = $newsparser->parseOneNew($resNewPage->body());
+                $resNewPage = $client->get($newHeader->url);
+                $newDto = $newsparser->parseOneNew($resNewPage);
                 $service->setNew($newHeader->url,$newDto);
             }
         }

@@ -63,7 +63,6 @@ class NewsParserService{
         $imgs = $this->parseWithRegexMany(NewsParserService::$PATTERN_GET_IMGS,$html,2,"imgs");
         $imgs = array_map(fn($item)=>$this->mainUrl.$item,$imgs);
         $text = $this->parseWithRegexOne(NewsParserService::$PATTERN_GET_TEXTS,$html,"texts",3);
-        $text = strip_tags($text);
         $date = $this->parseWithRegexOne(NewsParserService::$PATTERN_GET_DATE,$html,"date",2);
         return new NewsDto($imgs,$title,$text,$date);
 
