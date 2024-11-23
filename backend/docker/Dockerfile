@@ -1,7 +1,5 @@
 FROM ubuntu:22.04
 
-ARG WWWGROUP
-
 WORKDIR /var/www/html
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -28,19 +26,19 @@ RUN apt-get update && apt-get upgrade -y \
        php8.3-intl php8.3-readline \
        php8.3-ldap \
        php8.3-msgpack php8.3-igbinary php8.3-redis \
-       php8.3-memcached \
+       php8.3-memcached composer \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.3
-RUN groupadd --force -g $WWWGROUP sail
-RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
-COPY start-container /usr/local/bin/start-container
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY php.ini /etc/php/8.3/cli/conf.d/99-sail.ini
-COPY crontab /etc/cron.d/laravel-cron
+COPY . .
+RUN composer install
+RUN cp docker/start-container /usr/local/bin/start-container
+RUN cp docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN cp docker/php.ini /etc/php/8.3/cli/conf.d/99-sail.ini
+RUN cp docker/crontab /etc/cron.d/laravel-cron
 RUN chmod 0644 /etc/cron.d/laravel-cron \
     && crontab /etc/cron.d/laravel-cron
 RUN chmod +x /usr/local/bin/start-container
