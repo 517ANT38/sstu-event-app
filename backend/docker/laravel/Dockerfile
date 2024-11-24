@@ -12,7 +12,7 @@ RUN composer install  \
 FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www
-
+RUN chmod 777 /var/www
 RUN set -ex \
  && apk update \
  && apk upgrade \

@@ -1,6 +1,7 @@
 services:
     laravel:
         image: 'backend'
+        container_name: laravel
         restart: unless-stopped
         tty: true
         volumes:
@@ -9,6 +10,15 @@ services:
             - backend
         depends_on:
             - mongodb
+            - redis
+    init_data:
+        image: 'backend'
+        volumes:
+            - ./:/var/www
+        command: ['php','artisan', 'app:get-and-set-to-storage-news']
+        networks:
+            - backend
+        depends_on:
             - redis
 
     web:
@@ -27,6 +37,7 @@ services:
     mongodb:
         image: 'mongo'
         container_name: mongodb
+        restart: unless-stopped
         environment:
             - 'MONGODB_INITDB_ROOT_USERNAME=${MONGODB_USERNAME:-}'
             - 'MONGODB_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD:-}'
@@ -47,6 +58,7 @@ services:
     redis:
         image: 'redis:alpine'
         container_name: redis
+        restart: unless-stopped
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
