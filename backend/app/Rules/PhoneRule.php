@@ -14,7 +14,8 @@ class PhoneRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(!preg_replace('/\D/', '', $value)){
+        $value = preg_replace('/\D/', '', $value);
+        if(!preg_match('/^(7|8)\d{10}$/', $value)){
             $fail('incorrect phone number format');
         }
     }

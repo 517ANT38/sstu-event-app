@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests\RequestEventRequest;
+use Illuminate\Routing\Controller;
 use App\Services\EventRequestService;
+use App\Http\Requests\RequestEventRequest;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 class RequestEventController extends Controller
 {
 
@@ -12,11 +15,12 @@ class RequestEventController extends Controller
     ){}
 
 
-    public function create(RequestEventRequest $request)
+    public function create(RequestEventRequest $req)
     {
-        $res  = $request->validated();
+        $res  = $req->validated();
         $this->service->save($res);
         return response()->noContent(Response::HTTP_CREATED);
+
     }
 
 
