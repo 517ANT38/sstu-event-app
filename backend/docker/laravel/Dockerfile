@@ -24,8 +24,5 @@ RUN pecl install mongodb redis \
 && docker-php-ext-enable mongodb \
 && docker-php-ext-enable redis
 
-RUN echo "* * * * * /usr/bin/php /var/www/artisan schedule:run" >> /etc/crontab
-RUN touch /var/log/cron.log
-
 COPY --from=vendor . vendor/
-CMD bash -c "crond && php-fpm"
+CMD ["php-fpm"]
