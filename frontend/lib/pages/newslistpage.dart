@@ -86,6 +86,7 @@ class NewsListPageState extends State<NewsListPage> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,9 +105,6 @@ class NewsListPageState extends State<NewsListPage> {
                     children: [News(model: m), const SizedBox(height: 20)]))
               ],
             ))),
-            Container(
-                color: Theme.of(context).colorScheme.secondary,
-                constraints: const BoxConstraints.tightFor(height: 38)),
           ],
         ),
         Align(
@@ -116,17 +114,6 @@ class NewsListPageState extends State<NewsListPage> {
                   setShowFilter(true);
                 },
                 child: Image.asset("assets/images/expand.png"))),
-        Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              constraints: const BoxConstraints.tightFor(height: 54),
-              decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(15)),
-                  color: Theme.of(context).colorScheme.inversePrimary),
-              child: TextButton(
-                  onPressed: () {}, child: const Text("Your subscribes")),
-            )),
         if (showFilter)
           Stack(children: [
             GestureDetector(onTap: () {
