@@ -8,17 +8,34 @@ class News extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-      children: [
-        Text(model.title),
-        if (model.imgURLs.isNotEmpty)
-          Image(image: NetworkImage(model.imgURLs[0])),
-        Text(model.description),
-        Text('${model.date.day}.${model.date.month}.${model.date.year}'),
-        if (model.imgURLs.length > 1)
-          ...model.imgURLs.sublist(1).map((e) => Image(image: NetworkImage(e)))
-      ],
-    ));
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+          constraints: const BoxConstraints.tightFor(width: 310, height: 86),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                  constraints:
+                      const BoxConstraints.tightFor(width: 224, height: 86),
+                  padding: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Text(model.title, textAlign: TextAlign.center)),
+              Container(
+                constraints:
+                    const BoxConstraints.tightFor(width: 86, height: 86),
+                child: const Image(
+                    alignment: Alignment.center,
+                    fit: BoxFit.fitHeight,
+                    image: NetworkImage(
+                      'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
+                    )),
+              ),
+              if (model.imgURLs.isNotEmpty)
+                Image(image: NetworkImage(model.imgURLs[0])),
+            ],
+          )),
+    );
   }
 }
