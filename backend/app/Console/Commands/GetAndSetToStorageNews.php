@@ -39,7 +39,6 @@ class GetAndSetToStorageNews extends Command
             $resPageNews = $client->get($siteUrl);
             $rootUrl = $siteName == 'sstu' ? Config("app.mainUrl") : $siteUrl;
             $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($resPageNews,$rootUrl);
-            $service->deleteHeaders($siteName);
             $service->addHeadersNews($siteName,$newsHeaders);
             foreach ($newsHeaders as $newHeader) {
                 $resNewPage = $client->get($newHeader->url);

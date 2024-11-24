@@ -20,7 +20,7 @@ class NewNotFoundException extends Exception
 
     public function context(): array
     {
-        return ['order_id' => $this->url];
+        return ['url' => $this->url];
     }
 
 }

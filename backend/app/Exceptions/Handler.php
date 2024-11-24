@@ -7,6 +7,7 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\ConnectionException;
 use App\Exceptions\NotMatchesException;
 use App\Exceptions\NewNotFoundException;
+use App\Exceptions\HeadersNewsNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -25,6 +26,12 @@ class Handler extends ExceptionHandler
             $url = $e->getUrl();
             return response()->json([
                 'message' => "New not found by url=$url."
+            ],404);
+        });
+        $this->renderable(function (HeadersNewsNotFoundException $e) {
+            $siteName = $e->getSiteName();
+            return response()->json([
+                'message' => "New not found by siteName=$siteName."
             ],404);
         });
     }

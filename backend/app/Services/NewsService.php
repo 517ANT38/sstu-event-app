@@ -3,6 +3,7 @@ namespace App\Services;
 use App\Repositories\NewsRepositoryInterface;
 use App\Models\DTO\NewsDto;
 use App\Exceptions\NewNotFoundException;
+use App\Exceptions\HeadersNewsNotFoundException;
 class NewsService{
 
     public function __construct(private NewsRepositoryInterface $repo){}
@@ -12,7 +13,11 @@ class NewsService{
     }
 
     public function getHeadersNews(string $siteName){
-        return $this->repo->getHeadersNews($siteName);
+        $headers = $this->repo->getHeadersNews($siteName);
+        if($headers == null){
+            throw new HeadersNewsNotFoundException($siteName);
+        }
+        return $headers;
     }
 
     public function getNew(string $url){
@@ -26,8 +31,6 @@ class NewsService{
     public function setNew(string $url,NewsDto $dto){
         $this->repo->setNew($url,$dto);
     }
-
-    public function deleteHeaders(string $siteName){$this->repo->delete($siteName);}
 
     public function deleteNew(string $url){$this->repo->delete($url);}
 }
