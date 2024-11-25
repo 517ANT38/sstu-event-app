@@ -12,7 +12,8 @@ class NewsListPage extends StatefulWidget {
   }
 }
 
-class NewsListPageState extends State<NewsListPage> {
+class NewsListPageState extends State<NewsListPage>
+    with SingleTickerProviderStateMixin {
   List<NewsModel> models = [
     NewsModel(
         title: "Hello",
@@ -83,6 +84,21 @@ class NewsListPageState extends State<NewsListPage> {
     });
   }
 
+  late Animation<double> animation;
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
+
+    animation = Tween<double>(begin: -3, end: -1).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -111,19 +127,23 @@ class NewsListPageState extends State<NewsListPage> {
             alignment: Alignment.centerLeft,
             child: InkWell(
                 onTap: () {
-                  setShowFilter(true);
+                  controller.forward().then((_) {
+                    setShowFilter(true);
+                  });
                 },
                 child: Image.asset("assets/images/expand.png"))),
-        if (showFilter)
-          Stack(children: [
+        Stack(children: [
+          if (showFilter)
             GestureDetector(onTap: () {
-              setShowFilter(false);
+              controller.reverse().then((_) {
+                setShowFilter(false);
+              });
             }),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Faclist(),
-            )
-          ])
+          Align(
+            alignment: Alignment(animation.value, 0),
+            child: const Faclist(),
+          )
+        ])
       ],
     );
   }
