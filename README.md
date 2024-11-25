@@ -1,6 +1,10 @@
 # sstu-event-app
 
-## Для сборки
-DOCKER_BUILDKIT=1 docker build --no-cache -f docker/laravel/Dockerfile -t backend .
-## Для запуска
-docker-compose up -d
+## Backend
+Перейдите в папку backend. Выполните команды.
+### Для сборки
+```make build```
+### Для запуска
+```make up```
+### Для загрузки новостей в redis
+```make init-data```

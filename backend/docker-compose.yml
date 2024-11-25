@@ -11,17 +11,10 @@ services:
         depends_on:
             - mongodb
             - redis
-    init_data:
-        image: 'backend'
-        volumes:
-            - ./:/var/www
-        command: ['php','artisan', 'app:get-and-set-to-storage-news']
-        networks:
-            - backend
-        depends_on:
-            - redis
+
     cron:
         image: 'backend'
+        restart: unless-stopped
         volumes:
             - ./:/var/www
         command: bash -c "(crontab -l 2>/dev/null; echo '* * * * * php /var/www/artisan schedule:run') | crontab - && touch /var/log/cron.log && crond -f"

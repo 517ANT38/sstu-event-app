@@ -10,7 +10,7 @@ class NewsRepository implements NewsRepositoryInterface{
         Redis::set($siteName, json_encode($news));
     }
 
-    public function getHeadersNews(string $siteName):array{
+    public function getHeadersNews(string $siteName):?array{
         $news = json_decode(Redis::get($siteName),true);
         if($news != null){
             return array_map(fn($item)=>HeaderNewDto::transform($item),$news);
