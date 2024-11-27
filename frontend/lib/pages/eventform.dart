@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sstu_event_app/components/bottomnavbar.dart';
 import 'package:sstu_event_app/components/custominput.dart';
 import 'package:sstu_event_app/formatters/enumformatter.dart';
 import 'package:sstu_event_app/formatters/intminmaxformatter.dart';
@@ -36,194 +36,246 @@ class EventFormState extends State<EventForm> {
   final countType =
       const TextInputType.numberWithOptions(signed: false, decimal: false);
 
-  String sel1Value = "";
-  String sel2Value = "";
+  final fInterval = const SizedBox(height: 15);
+  final sInterval = const SizedBox(height: 5);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-          key: fkey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: [
-                const Text("What is your name?"),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Main"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {}, icon: Image.asset("assets/images/notify.png"))
+        ],
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Form(
+              key: fkey,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                        "Enter data in form for subscribe. We callback you after few time."),
 
-                // Имя
-                CustomInput(
-                  controller: firstNameController,
-                  keyboardType: TextInputType.name,
-                  placeholder: "First name",
-                  inputFormatters: [NameFormatter.get()],
-                ),
+                    sInterval,
 
-                const SizedBox(height: 10),
+                    const Text("What is your name?"),
 
-                // Фамилия
-                CustomInput(
-                  controller: secondNameController,
-                  keyboardType: TextInputType.name,
-                  placeholder: "Last name",
-                  inputFormatters: [NameFormatter.get()],
-                ),
+                    sInterval,
 
-                const SizedBox(height: 10),
+                    // Имя
+                    CustomInput(
+                      controller: firstNameController,
+                      keyboardType: TextInputType.name,
+                      placeholder: "First name",
+                      inputFormatters: [NameFormatter.get()],
+                      required: true,
+                    ),
 
-                // Отчество
-                CustomInput(
-                  controller: thirdNameController,
-                  keyboardType: TextInputType.name,
-                  placeholder: "Middle name",
-                  inputFormatters: [NameFormatter.get()],
-                ),
+                    fInterval,
 
-                const SizedBox(height: 20),
+                    // Фамилия
+                    CustomInput(
+                      controller: secondNameController,
+                      keyboardType: TextInputType.name,
+                      placeholder: "Last name",
+                      inputFormatters: [NameFormatter.get()],
+                      required: true,
+                    ),
 
-                const Text("Where are you from?"),
+                    fInterval,
 
-                // Учебное заведение
-                CustomInput(
-                  controller: schoolController,
-                  placeholder: "School",
-                ),
+                    // Отчество
+                    CustomInput(
+                      controller: thirdNameController,
+                      keyboardType: TextInputType.name,
+                      placeholder: "Middle name",
+                      inputFormatters: [NameFormatter.get()],
+                    ),
 
-                const SizedBox(height: 20),
+                    fInterval,
 
-                const Text("How many kids want to visit us?"),
+                    sInterval,
 
-                // Кол-во детей
-                CustomInput(
-                  controller: countController,
-                  keyboardType: countType,
-                  placeholder: "Count",
-                  inputFormatters: [IntMinMaxFormatter(min: 1, max: 100)],
-                ),
+                    const Text("Where are you from?"),
 
-                const SizedBox(height: 20),
+                    sInterval,
 
-                const Text("What classes of children are coming to us?"),
+                    // Учебное заведение
+                    CustomInput(
+                      controller: schoolController,
+                      placeholder: "School",
+                      required: true,
+                    ),
 
-                // Класс(ы)
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  ConstrainedBox(
-                      constraints: const BoxConstraints.tightFor(width: 100),
-                      child: CustomInput(
-                        controller: class1Controller,
-                        placeholder: "min",
-                        keyboardType: countType,
-                        inputFormatters: [IntMinMaxFormatter(min: 1, max: 11)],
-                        onChanged: (value) {
-                          setState(() {
-                            sel1Value = value;
-                            if (sel2Value.isNotEmpty &&
-                                value.isNotEmpty &&
-                                int.parse(sel2Value) <= int.parse(value)) {
-                              class2Controller.clear();
-                              sel2Value = "";
-                            }
-                          });
-                        },
-                      )),
-                  const SizedBox(width: 10.0),
-                  const Text('-'),
-                  const SizedBox(width: 10.0),
-                  ConstrainedBox(
-                      constraints: const BoxConstraints.tightFor(width: 100),
-                      child: CustomInput(
-                        enabled:
-                            sel1Value.isNotEmpty && int.parse(sel1Value) != 11,
-                        controller: class2Controller,
-                        placeholder: 'max',
-                        keyboardType: countType,
-                        onChanged: (value) {
-                          setState(() {
-                            sel2Value = value;
-                          });
-                        },
-                        inputFormatters: [
-                          EnumFormatter(values: [
-                            "1",
-                            "10",
-                            ...List.generate(
-                                11 - (int.tryParse(sel1Value) ?? 11),
-                                (index) => (11 - index).toString())
-                          ])
-                        ],
-                      ))
-                ]),
+                    fInterval,
 
-                const SizedBox(height: 20),
+                    sInterval,
 
-                const Text("What is your phone number?"),
+                    const Text("How many kids want to visit us?"),
 
-                // Номер телефона
-                CustomInput(
-                  controller: phoneController,
-                  keyboardType: TextInputType.phone,
-                  placeholder: "8 888 909-11-22",
-                  inputFormatters: [LengthFormatter(length: 20)],
-                ),
+                    sInterval,
 
-                const SizedBox(height: 20),
+                    // Кол-во детей
+                    CustomInput(
+                      controller: countController,
+                      keyboardType: countType,
+                      placeholder: "Count",
+                      inputFormatters: [IntMinMaxFormatter(min: 1, max: 100)],
+                      required: true,
+                    ),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    borderRadius: BorderRadius.circular(15)
-                  ),
-                  child: TextButton(
-                      onPressed: () {
-                        List<String> errors = [];
+                    sInterval,
 
-                        if (phoneController.text.isEmpty) {
-                          errors.add("Empty phone number");
-                        } else if (!RegExp(
-                                r"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$")
-                            .hasMatch(phoneController.text)) {
-                          errors.add("Incorrect phone number");
-                        }
+                    const Text("What classes of children are coming to us?"),
 
-                        if (firstNameController.text.isEmpty) {
-                          errors.add("Empty first name");
-                        }
+                    sInterval,
 
-                        if (secondNameController.text.isEmpty) {
-                          errors.add("Empty last name");
-                        }
-
-                        if (schoolController.text.isEmpty) {
-                          errors.add("Empty school name");
-                        }
-
-                        if (countController.text.isEmpty) {
-                          errors.add("Empty kids count");
-                        }
-
-                        if (sel1Value.isEmpty) {
-                          errors.add("Empty min class");
-                        } else if (sel2Value.isNotEmpty &&
-                            int.parse(sel2Value) <= int.parse(sel1Value)) {
-                          errors.add("Max class must be less than min class");
-                        }
-
-                        if (errors.isNotEmpty) {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: errors.map((e) => Text(e)).toList(),
-                                ));
+                    // Класс(ы)
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      ConstrainedBox(
+                          constraints:
+                              const BoxConstraints.tightFor(width: 120),
+                          child: CustomInput(
+                            controller: class1Controller,
+                            placeholder: "min",
+                            keyboardType: countType,
+                            required: true,
+                            inputFormatters: [
+                              IntMinMaxFormatter(min: 1, max: 11)
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                if (class2Controller.text.isNotEmpty &&
+                                    value.isNotEmpty &&
+                                    int.parse(class2Controller.text) <=
+                                        int.parse(value)) {
+                                  class2Controller.clear();
+                                }
                               });
-                        }
-                      },
-                      child: const Text("Отправить")),
+                            },
+                          )),
+                      const SizedBox(width: 10.0),
+                      const Text('-'),
+                      const SizedBox(width: 10.0),
+                      ConstrainedBox(
+                          constraints:
+                              const BoxConstraints.tightFor(width: 120),
+                          child: CustomInput(
+                            enabled: class1Controller.text.isNotEmpty &&
+                                int.parse(class1Controller.text) != 11,
+                            controller: class2Controller,
+                            placeholder: 'max',
+                            keyboardType: countType,
+                            inputFormatters: [
+                              EnumFormatter(values: [
+                                "1",
+                                "10",
+                                ...List.generate(
+                                    11 -
+                                        (int.tryParse(class1Controller.text) ??
+                                            11),
+                                    (index) => (11 - index).toString())
+                              ])
+                            ],
+                          ))
+                    ]),
+
+                    fInterval,
+
+                    sInterval,
+
+                    const Text("What is your phone number?"),
+
+                    sInterval,
+
+                    // Номер телефона
+                    CustomInput(
+                      controller: phoneController,
+                      keyboardType: TextInputType.phone,
+                      placeholder: "8 888 909-11-22",
+                      inputFormatters: [LengthFormatter(length: 20)],
+                      required: true,
+                    ),
+
+                    fInterval,
+
+                    sInterval,
+
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Container(
+                        constraints: const BoxConstraints.tightFor(height: 45),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: TextButton(
+                            onPressed: () {
+                              List<String> errors = [];
+
+                              if (phoneController.text.isEmpty) {
+                                errors.add("Empty phone number");
+                              } else if (!RegExp(r"^(7|8)\d{10}$")
+                                  .hasMatch(phoneController.text)) {
+                                errors.add("Incorrect phone number");
+                              }
+
+                              if (firstNameController.text.isEmpty) {
+                                errors.add("Empty first name");
+                              }
+
+                              if (secondNameController.text.isEmpty) {
+                                errors.add("Empty last name");
+                              }
+
+                              if (schoolController.text.isEmpty) {
+                                errors.add("Empty school name");
+                              }
+
+                              if (countController.text.isEmpty) {
+                                errors.add("Empty kids count");
+                              }
+
+                              if (class1Controller.text.isEmpty) {
+                                errors.add("Empty min class");
+                              } else if (class2Controller.text.isNotEmpty &&
+                                  int.parse(class2Controller.text) <=
+                                      int.parse(class1Controller.text)) {
+                                errors.add(
+                                    "Max class must be less than min class");
+                              }
+
+                              if (errors.isNotEmpty) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                          content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children:
+                                            errors.map((e) => Text(e)).toList(),
+                                      ));
+                                    });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Success")));
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              }
+                            },
+                            child: const Text("Отправить")),
+                      )
+                    ]),
+                  ],
                 ),
-              ],
-            ),
-          )),
+              )),
+        ),
+      ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
