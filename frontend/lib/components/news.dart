@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sstu_event_app/api/news.dart';
 import 'package:sstu_event_app/models/news.dart';
 import 'package:sstu_event_app/pages/newspage.dart';
 
 class News extends StatelessWidget {
-  final NewsModel model;
+  final HeaderNewsModel model;
 
   const News({super.key, required this.model});
 
@@ -13,8 +14,10 @@ class News extends StatelessWidget {
       borderRadius: BorderRadius.circular(15),
       child: GestureDetector(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => NewsPage(model: model)));
+            NewsAgent.getOne(model.id).then((value) {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => NewsPage(model: value)));
+            });
           },
           child: Container(
               constraints:
@@ -39,8 +42,7 @@ class News extends StatelessWidget {
                           'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
                         )),
                   ),
-                  if (model.imgURLs.isNotEmpty)
-                    Image(image: NetworkImage(model.imgURLs[0])),
+                  Image(image: NetworkImage(model.imgURL)),
                 ],
               ))),
     );

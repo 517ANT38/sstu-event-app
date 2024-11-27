@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sstu_event_app/api/news.dart';
 import 'package:sstu_event_app/components/bottomnavbar.dart';
 import 'package:sstu_event_app/components/faclist.dart';
 import 'package:sstu_event_app/components/news.dart';
+import 'package:sstu_event_app/models/faculties.dart';
 import 'package:sstu_event_app/models/news.dart';
 
 class NewsListPage extends StatefulWidget {
@@ -15,68 +17,7 @@ class NewsListPage extends StatefulWidget {
 
 class NewsListPageState extends State<NewsListPage>
     with SingleTickerProviderStateMixin {
-  List<NewsModel> models = [
-    NewsModel(
-        title: "Hello",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "bye",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "okay",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "Hello",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "bye",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "okay",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "Hello",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "bye",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "okay",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "Hello",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "bye",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-    NewsModel(
-        title: "okay",
-        description: "description",
-        date: DateTime.now(),
-        imgURLs: []),
-  ];
+  List<HeaderNewsModel> models = [];
 
   bool showFilter = false;
   setShowFilter(bool showFilter) {
@@ -98,6 +39,12 @@ class NewsListPageState extends State<NewsListPage>
       ..addListener(() {
         setState(() {});
       });
+
+    NewsAgent.getAll(Faculties.inpit).then((value) {
+      setState(() {
+        models = value;
+      });
+    });
   }
 
   @override
