@@ -12,7 +12,7 @@ abstract class NewsAgent extends Agent {
         .toList();
   }
 
-  static Future<NewsModel> getOne(String id) async {
+  static Future<NewsModel> getOne(int id) async {
     return NewsModel.fromJson(
         json.decode((await Agent.get("news/id/$id")).body));
   }
