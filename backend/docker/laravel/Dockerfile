@@ -1,14 +1,3 @@
-FROM composer AS vendor
-
-COPY composer.json .
-COPY composer.lock .
-RUN composer install  \
---ignore-platform-reqs \
---no-interaction \
---no-plugins \
---no-scripts \
---prefer-dist
-
 FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www
@@ -20,9 +9,9 @@ RUN set -ex \
  && docker-php-ext-configure zip \
  && docker-php-ext-install zip bcmath xml
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN pecl install mongodb redis \
 && docker-php-ext-enable mongodb \
 && docker-php-ext-enable redis
 
-COPY --from=vendor . vendor/
 CMD ["php-fpm"]

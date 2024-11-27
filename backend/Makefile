@@ -1,6 +1,9 @@
 build:
 	DOCKER_BUILDKIT=1 docker build --no-cache -f docker/laravel/Dockerfile -t backend .
-up:	
+up:
 	docker-compose up -d
-init-data:	
+install-or-update-deps:
+	docker compose exec laravel composer update laravel/framework
+	docker compose exec laravel composer install
+init-data:
 	docker-compose exec laravel php artisan app:get-and-set-to-storage-news
