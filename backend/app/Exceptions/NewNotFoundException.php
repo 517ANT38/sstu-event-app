@@ -6,21 +6,21 @@ use Exception;
 
 class NewNotFoundException extends Exception
 {
-    private string $url;
+    private string $id;
 
-    public function __construct(string $url)
+    public function __construct(string $id)
     {
         parent::__construct();
-        $this->url = $url;
+        $this->id = $id;
     }
 
-    public function getUrl(){
-        return $this->url;
+    public function getId(){
+        return $this->id;
     }
 
     public function context(): array
     {
-        return ['url' => $this->url];
+        return ['id' => $this->id];
     }
 
 }

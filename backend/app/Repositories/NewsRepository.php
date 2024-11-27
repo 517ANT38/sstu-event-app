@@ -19,15 +19,15 @@ class NewsRepository implements NewsRepositoryInterface{
 
     }
 
-    public function getNew(string $url):?NewsDto{
-        $new = json_decode(Redis::get($url),true);
+    public function getNew(string $id):?NewsDto{
+        $new = json_decode(Redis::get($id),true);
         if($new != null)
             return NewsDto::transform($new);
         return null;
     }
 
-    public function setNew(string $url,NewsDto $new,int $ttl = 23400):void{
-        Redis::set($url,json_encode($new),"EX",$ttl);
+    public function setNew(string $id,NewsDto $new,int $ttl = 23400):void{
+        Redis::set($id,json_encode($new),"EX",$ttl);
     }
 
     public function delete(string $key): void {

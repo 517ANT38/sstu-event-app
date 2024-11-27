@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('news/{universityСode}',[NewsController::class,'showNewsHeaders']);
-Route::get('news/url/{url?}',[NewsController::class,'showNew'])->where("url","(.*)");
+Route::get('news/id/{id}',[NewsController::class,'showNew']);
 Route::get("requestsEvents",[RequestEventController::class,'show']);
 Route::post("requestsEvents/create",[RequestEventController::class,'create']);
 

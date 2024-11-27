@@ -33,6 +33,7 @@ class NewsParserService{
         $headers = [];
         for ($i=0; $i < $countMatchs; $i++) {
             array_push($headers,new HeaderNewDto(
+                null,
                 $this->mainUrl.$matchesImgs[$i],
                 $matchesTitles[$i],
                 $rootUrl.$matchesUrls[$i]

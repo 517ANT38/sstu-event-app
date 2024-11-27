@@ -9,7 +9,11 @@ class NewsService{
     public function __construct(private NewsRepositoryInterface $repo){}
 
     public function addHeadersNews(string $siteName, array $news){
+        foreach($news as $new){
+            $new->id = uniqid();
+        }
         $this->repo->addHeadersNews($siteName,$news);
+        return $news;
     }
 
     public function getHeadersNews(string $siteName){
@@ -20,17 +24,17 @@ class NewsService{
         return $headers;
     }
 
-    public function getNew(string $url){
-        $new  = $this->repo->getNew($url);
+    public function getNew(string $id){
+        $new  = $this->repo->getNew($id);
         if($new == null){
-            throw new NewNotFoundException($url);
+            throw new NewNotFoundException($id);
         }
         return $new;
     }
 
-    public function setNew(string $url,NewsDto $dto){
-        $this->repo->setNew($url,$dto);
+    public function setNew(string $id,NewsDto $dto){
+        $this->repo->setNew($id,$dto);
     }
 
-    public function deleteNew(string $url){$this->repo->delete($url);}
+    public function deleteNew(string $id){$this->repo->delete($id);}
 }

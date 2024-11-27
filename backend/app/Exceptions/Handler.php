@@ -23,9 +23,9 @@ class Handler extends ExceptionHandler
     {
 
         $this->renderable(function (NewNotFoundException $e) {
-            $url = $e->getUrl();
+            $id = $e->getId();
             return response()->json([
-                'message' => "New not found by url=$url."
+                'message' => "New not found by url=$id."
             ],404);
         });
         $this->renderable(function (HeadersNewsNotFoundException $e) {
