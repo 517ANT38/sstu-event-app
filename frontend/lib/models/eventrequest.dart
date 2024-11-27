@@ -4,9 +4,9 @@ class EventRequest {
   final String middleName;
   final String edu;
   final String phone;
-  final String countChild;
-  final String fromClass;
-  final String toClass;
+  final int countChild;
+  final int fromClass;
+  final int toClass;
 
   EventRequest(
       {required this.secondName,
@@ -19,15 +19,40 @@ class EventRequest {
       required this.toClass});
 
   factory EventRequest.fromJson(Map<String, dynamic> data) {
-    return EventRequest(
-      firstName: data['firstName'] as String,
-      secondName: data['secondName'] as String,
-      middleName: data['middleName'] as String,
-      edu: data['edu'] as String,
-      phone: data['phone'] as String,
-      countChild: data['countChild'] as String,
-      fromClass: data['fromClass'] as String,
-      toClass: data['toClass'] as String,
-    );
+    return switch (data) {
+      {
+        'firstName': String firstName,
+        'secondName': String secondName,
+        'middleName': String middleName,
+        'edu': String edu,
+        'phone': String phone,
+        'countChild': int countChild,
+        'fromClass': int fromClass,
+        'toClass': int toClass
+      } =>
+        EventRequest(
+            secondName: secondName,
+            firstName: firstName,
+            middleName: middleName,
+            edu: edu,
+            phone: phone,
+            countChild: countChild,
+            fromClass: fromClass,
+            toClass: toClass),
+      _ => throw const FormatException("Failed to load EventRequest")
+    };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "firstName": firstName,
+      "secondName": secondName,
+      "middleName": middleName,
+      "edu": edu,
+      "phone": phone,
+      "countChild": countChild,
+      "fromClass": fromClass,
+      "toClass": toClass
+    };
   }
 }
