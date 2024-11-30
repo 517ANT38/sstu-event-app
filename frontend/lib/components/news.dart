@@ -35,14 +35,13 @@ class News extends StatelessWidget {
                   Container(
                     constraints:
                         const BoxConstraints.tightFor(width: 86, height: 86),
-                    child: const Image(
+                    child: Image(
                         alignment: Alignment.center,
                         fit: BoxFit.fitHeight,
                         image: NetworkImage(
-                          'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
+                          model.imgURL,
                         )),
                   ),
-                  Image(image: NetworkImage(model.imgURL)),
                 ],
               ))),
     );

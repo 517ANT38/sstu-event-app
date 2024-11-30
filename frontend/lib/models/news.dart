@@ -14,22 +14,22 @@ class NewsModel {
     return switch (data) {
       {
         'title': String title,
-        'description': String description,
+        'desc': String description,
         'date': String date,
-        'imgUrls': List<String> imgURLs
+        'imgUrls': List<dynamic> imgUrls
       } =>
         NewsModel(
             title: title,
             description: description,
             date: DateTime.parse(date.split(".").reversed.join("-")),
-            imgURLs: imgURLs),
+            imgURLs: imgUrls.map((e) => e as String).toList()),
       _ => throw const FormatException("Failed to load News")
     };
   }
 }
 
 class HeaderNewsModel {
-  final int id;
+  final String id;
   final String title;
   final String url;
   final String imgURL;
@@ -43,7 +43,7 @@ class HeaderNewsModel {
   factory HeaderNewsModel.fromJson(Map<String, dynamic> data) {
     return switch (data) {
       {
-        'id': int id,
+        'id': String id,
         'title': String title,
         'url': String url,
         'imgUrl': String imgUrl
