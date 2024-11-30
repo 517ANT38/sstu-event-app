@@ -17,7 +17,8 @@ class NewsListPage extends StatefulWidget {
 
 class NewsListPageState extends State<NewsListPage>
     with SingleTickerProviderStateMixin {
-  List<HeaderNewsModel> models = [];
+  Map<Faculties, List<HeaderNewsModel>> headers =
+      Map.fromEntries(Faculties.values.map((e) => MapEntry(e, [])));
 
   bool showFilter = false;
   setShowFilter(bool showFilter) {
@@ -28,6 +29,8 @@ class NewsListPageState extends State<NewsListPage>
 
   late Animation<double> animation;
   late AnimationController controller;
+
+  late Set<Faculties> faculties;
 
   @override
   void initState() {
@@ -40,11 +43,15 @@ class NewsListPageState extends State<NewsListPage>
         setState(() {});
       });
 
-    NewsAgent.getAll(Faculties.inpit).then((value) {
-      setState(() {
-        models = value;
+    faculties = Faculties.values.toSet();
+
+    for (var fac in Faculties.values) {
+      NewsAgent.getAll(fac).then((value) {
+        setState(() {
+          headers.addAll({fac: value});
+        });
       });
-    });
+    }
   }
 
   @override
@@ -75,8 +82,13 @@ class NewsListPageState extends State<NewsListPage>
                         child: Column(
                   children: [
                     const SizedBox(height: 10),
-                    ...models.map((m) => Column(
-                        children: [News(model: m), const SizedBox(height: 20)]))
+                    ...headers.entries
+                        .where((entry) => faculties.contains(entry.key))
+                        .expand((entry) => entry.value)
+                        .map((model) => Column(children: [
+                              News(model: model),
+                              const SizedBox(height: 20)
+                            ]))
                   ],
                 ))),
               ],
@@ -99,7 +111,11 @@ class NewsListPageState extends State<NewsListPage>
                 }),
               Align(
                 alignment: Alignment(animation.value, 0),
-                child: const Faclist(),
+                child: Faclist(onChange: (facs) {
+                  setState(() {
+                    faculties = facs;
+                  });
+                },),
               )
             ])
           ],

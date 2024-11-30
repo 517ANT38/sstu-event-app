@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sstu_event_app/models/faculties.dart';
 
 class Faclist extends StatefulWidget {
-  const Faclist({super.key});
+  final void Function(Set<Faculties> facs)? onChange;
+
+  const Faclist({super.key, this.onChange});
 
   @override
   State<StatefulWidget> createState() {
@@ -20,12 +22,14 @@ class FaclistState extends State<Faclist> {
       } else {
         selected.add(fac);
       }
+      widget.onChange?.call(selected);
     });
   }
 
   clearSelected() {
     setState(() {
       selected = Set.from(Faculties.values);
+      widget.onChange?.call(selected);
     });
   }
 
