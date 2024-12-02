@@ -41,8 +41,8 @@ class GetAndSetToStorageNews extends Command
             $resPageNews = $client->get($siteUrl);
 
             if ($siteName == "start-sstu") {
-                $newsHeaders = $startsstuparser->parseHeaders($resPageNews,$mailUrl);
-                $news = array_map(fn(HeaderNewDto $dto)=>$startsstuparser->parseNew($resPageNews,$dto->url,$mailUrl),
+                $newsHeaders = $startsstuparser->parseHeaders($resPageNews,$siteUrl);
+                $news = array_map(fn(HeaderNewDto $dto)=>$startsstuparser->parseNew($resPageNews,$dto->url,$siteUrl),
                     $newsHeaders);
             }else{
                 $rootUrl = $siteName == 'sstu' ? $mailUrl : $siteUrl;
