@@ -5,7 +5,6 @@ namespace App\Exceptions;
 use Psr\Log\LogLevel;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\ConnectionException;
-use App\Exceptions\NotMatchesException;
 use App\Exceptions\NewNotFoundException;
 use App\Exceptions\HeadersNewsNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -13,7 +12,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 class Handler extends ExceptionHandler
 {
     protected $levels = [
-        NotMatchesException::class => LogLevel::CRITICAL,
         RequestException::class => LogLevel::CRITICAL,
         ConnectionException::class => LogLevel::CRITICAL
 
