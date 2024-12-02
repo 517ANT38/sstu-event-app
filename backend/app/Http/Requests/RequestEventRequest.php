@@ -22,7 +22,8 @@ class RequestEventRequest extends FormRequest
             'phone' => ['required','string','max:11',new PhoneRule],
             'countChild' => 'required|integer',
             'fromClass' => 'required|integer|min:1|max:11',
-            'toClass' => 'integer|min:1|max:11'
+            'toClass' => 'integer|min:1|max:11',
+            'urlEvent' => 'required|string'
         ];
     }
     protected function failedValidation(Validator $validator)

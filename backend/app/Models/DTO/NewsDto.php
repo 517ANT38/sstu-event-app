@@ -7,7 +7,7 @@ final class NewsDto{
         public array $imgUrls,
         public string $title,
         public string $desc,
-        public string $date
+        public ?string $date=null
     ){}
     public static function transform(array $args)
     {

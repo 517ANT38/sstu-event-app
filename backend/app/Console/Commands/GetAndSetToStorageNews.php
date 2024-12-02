@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use App\Services\NewsService;
 use Illuminate\Console\Command;
 use App\Http\Clients\HttpClient;
+use App\Models\DTO\HeaderNewDto;
 use App\Services\NewsParserService;
+use App\Services\NewsSstuStartParser;
 use Illuminate\Support\Facades\File;
 class GetAndSetToStorageNews extends Command
 {
@@ -32,19 +34,29 @@ class GetAndSetToStorageNews extends Command
 
     }
 
-    public function handle(NewsParserService $newsparser,NewsService $service,HttpClient $client)
+    public function handle(NewsParserService $newsparser,NewsSstuStartParser $startsstuparser,NewsService $service,HttpClient $client)
     {
-
+        $mailUrl = Config("app.mainUrl");
         foreach($this->mapSiteUrls as $siteName => $siteUrl){
             $resPageNews = $client->get($siteUrl);
-            $rootUrl = $siteName == 'sstu' ? Config("app.mainUrl") : $siteUrl;
-            $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($resPageNews,$rootUrl);
-            $newsHeadersWithIds = $service->addHeadersNews($siteName,$newsHeaders);
-            foreach ($newsHeadersWithIds as $newHeader) {
-                $resNewPage = $client->get($newHeader->url);
-                $newDto = $newsparser->parseOneNew($resNewPage);
-                $service->setNew($newHeader->id,$newDto);
+
+            if ($siteName == "start-sstu") {
+                $newsHeaders = $startsstuparser->parseHeaders($resPageNews,$mailUrl);
+                $news = array_map(fn(HeaderNewDto $dto)=>$startsstuparser->parseNew($resPageNews,$dto->url,$mailUrl),
+                    $newsHeaders);
+            }else{
+                $rootUrl = $siteName == 'sstu' ? $mailUrl : $siteUrl;
+                $newsHeaders = $newsparser->parseAllUrlFromHeadersNews($resPageNews,$rootUrl);
+                $news = array_map(function (HeaderNewDto $dto) use ($client,$rootUrl,$newsparser){
+                    $page = $client->get($dto->url);
+                    return $newsparser->parseOneNew($page,$rootUrl);
+                },$newsHeaders);
             }
+            $newsHeadersWithIds = $service->addHeadersNews($siteName,$newsHeaders);
+            for ($i=0; $i < count($newsHeadersWithIds) ; $i++) {
+                $service->setNew($newsHeadersWithIds[$i]->id,$news[$i]);
+            }
+
         }
 
     }

@@ -14,7 +14,8 @@ class RequestEvent extends Model
             'phone',
             'countChild',
             'fromClass',
-            'toClass'
+            'toClass',
+            'urlEvent'
         ];
 
 }
