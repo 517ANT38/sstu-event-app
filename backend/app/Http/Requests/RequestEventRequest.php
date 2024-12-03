@@ -20,10 +20,10 @@ class RequestEventRequest extends FormRequest
             'middleName' => 'string|max:255',
             'edu' => 'required|string|max:255',
             'phone' => ['required','string','max:11',new PhoneRule],
-            'countChild' => 'required|integer',
+            'countChild' => 'required|integer|min:1|max:100',
             'fromClass' => 'required|integer|min:1|max:11',
             'toClass' => 'integer|min:1|max:11',
-            'urlEvent' => 'required|string'
+            'idEvent' => 'required|string'
         ];
     }
     protected function failedValidation(Validator $validator)
