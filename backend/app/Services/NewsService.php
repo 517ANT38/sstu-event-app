@@ -10,7 +10,7 @@ class NewsService{
 
     public function addHeadersNews(string $siteName, array $news){
         foreach($news as $new){
-            $new->id = uniqid();
+            $new->id = bin2hex($new->url.'_'.date(DATE_ATOM));
         }
         $this->repo->addHeadersNews($siteName,$news);
         return $news;

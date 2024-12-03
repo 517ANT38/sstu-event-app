@@ -15,7 +15,7 @@ class RequestEvent extends Model
             'countChild',
             'fromClass',
             'toClass',
-            'urlEvent'
+            'idEvent'
         ];
 
 }
