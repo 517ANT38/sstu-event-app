@@ -29,10 +29,47 @@ table {
 table th, table td {
     border: 1px solid #ddd;
     padding: 10px;
-    text-align: left;
 }
 
 table th {
     background-color: #f4f4f4;
     font-weight: bold;
+}
+
+
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 30px;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #7c7e7c; /* Зеленый фон для success */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 1000;
+}
+.alert .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.alert .close-btn:hover {
+    color: #ccc;
+}
+.alert-details {
+    font-size: 14px;
+    color: #f9f9f9;
+    opacity: 0.8;
 }
