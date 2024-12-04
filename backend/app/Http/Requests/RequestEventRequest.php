@@ -17,7 +17,7 @@ class RequestEventRequest extends FormRequest
         return [
             'secondName' => 'required|string|max:100',
             'firstName' => 'required|string|max:100',
-            'middleName' => 'string|max:100|nullable',
+            'middleName' => 'string|max:100|min:0|nullable',
             'edu' => 'required|string|max:255',
             'phone' => ['required','string','max:11',new PhoneRule],
             'countChild' => 'required|integer|min:1|max:100',
