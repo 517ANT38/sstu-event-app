@@ -22,7 +22,7 @@ class RequestEventRequest extends FormRequest
             'phone' => ['required','string','max:11',new PhoneRule],
             'countChild' => 'required|integer|min:1|max:100',
             'fromClass' => 'required|integer|min:1|max:11',
-            'toClass' => 'integer|min:1|max:11',
+            'toClass' => 'integer|min:1|max:11|nullable',
             'idEvent' => 'required|string'
         ];
     }
