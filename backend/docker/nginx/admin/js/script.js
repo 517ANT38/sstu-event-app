@@ -64,7 +64,7 @@ function showAlert(url, date) {
     const alertDate = document.getElementById('alert-date');
 
     alertUrl.textContent = `URL: ${url}`;
-    alertDate.textContent = `Дата и время создания: ${date}`;
+    alertDate.textContent = `Дата и время создания мероприятия: ${date}`;
     alertBox.style.display = 'flex';
 }
 function hideAlert() {
