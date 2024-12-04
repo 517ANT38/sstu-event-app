@@ -27,7 +27,7 @@ class NewsRepository implements NewsRepositoryInterface{
     }
 
     public function setNew(string $id,NewsDto $new,int $ttl = 23400):void{
-        Redis::set($id,json_encode($new),"EX",$ttl);
+        Redis::set($id,str_replace('\\\\', '\\',json_encode($new)),"EX",$ttl);
     }
 
     public function delete(string $key): void {
