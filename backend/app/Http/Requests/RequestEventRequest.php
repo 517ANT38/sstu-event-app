@@ -17,7 +17,7 @@ class RequestEventRequest extends FormRequest
         return [
             'secondName' => 'required|string|max:100',
             'firstName' => 'required|string|max:100',
-            'middleName' => 'string|max:255',
+            'middleName' => 'string|max:100',
             'edu' => 'required|string|max:255',
             'phone' => ['required','string','max:11',new PhoneRule],
             'countChild' => 'required|integer|min:1|max:100',
@@ -26,6 +26,19 @@ class RequestEventRequest extends FormRequest
             'idEvent' => 'required|string'
         ];
     }
+
+    protected function withValidator(Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            $fromClass = $this->input('fromClass');
+            $toClass = $this->input('toClass');
+
+            if (!is_null($toClass) && $fromClass >= $toClass) {
+                $validator->errors()->add('fromClass', '`fromClass` should be less `toClass`.');
+            }
+        });
+    }
+
     protected function failedValidation(Validator $validator)
     {
         $res = response()->json(['success' => false, 'message' => 'Validation failed'], 422, [], JSON_UNESCAPED_UNICODE);
