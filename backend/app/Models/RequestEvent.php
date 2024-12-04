@@ -17,5 +17,5 @@ class RequestEvent extends Model
             'toClass',
             'idEvent'
         ];
-    protected $hidden = ['id','updated_at','updated_at'];
+    protected $hidden = ['id','updated_at'];
 }

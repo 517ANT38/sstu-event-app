@@ -1,17 +1,14 @@
 // Функция для получения данных с сервера
-let obj = {
-
-    "secondName": "Ant",
-    "firstName": "Ant",
-    "middleName": "Ant",
-    "edu": "edu",
-    "phone": "89378031774",
-    "countChild": 9,
-    "fromClass": 10,
-    "toClass": 11,
-    "idEvent": "68747470733a2f2f7777772e737374752e72752f6e6577732f706f6c6974656b682d6f7267616e697a6f76616c2d70726f666573696f6e616c6e79652d70726f62792d646c79612d656e67656c73736b696b682d73686b6f6c6e696b6f762e68746d6c5f323032342d31322d30335432313a32353a30392b30333a3030",
-}
-
+const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    timezone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  };
 async function fetchData() {
     try {
         const response = await fetch('/api/requestsEvents');
@@ -34,16 +31,7 @@ function hex2bin(hex)
 
 function alertDecodeIdEvent(data) {
     let [ url, date] = hex2bin(data).split('_');
-    let options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long',
-        timezone: 'UTC',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-      };
+
     showAlert(url,new Date(date).toLocaleString('ru'))
 
 }
@@ -56,6 +44,7 @@ function renderTable(data) {
 
     data.forEach(item => {
         const row = document.createElement('tr');
+        console.log(item)
         row.innerHTML = `
             <td style='cursor: pointer;' onclick='alertDecodeIdEvent("${item.idEvent}")'>${item.idEvent.slice(0,5)}</td>
             <td>${item.secondName} ${item.firstName} ${item.middleName??''}</td>
@@ -64,6 +53,7 @@ function renderTable(data) {
             <td>${item.countChild}</td>
             <td>${item.fromClass}</td>
             <td>${item.toClass}</td>
+            <td>${new Date(item.created_at).toLocaleString('ru',options)}</td>
         `;
         tableBody.appendChild(row);
     });
