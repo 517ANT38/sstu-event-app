@@ -275,7 +275,7 @@ class EventFormState extends State<EventForm> {
               )),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

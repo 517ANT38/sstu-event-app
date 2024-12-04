@@ -23,7 +23,8 @@ class NewsPage extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            Text(model.title),
+            Text(model.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+            const SizedBox(height: 20),
             Text(model.description),
             Text('${model.date.day}.${model.date.month}.${model.date.year}'),
             if (model.imgURLs.isNotEmpty)
@@ -38,13 +39,13 @@ class NewsPage extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => EventForm()));
+                          MaterialPageRoute(builder: (context) => const EventForm()));
                     },
                     child: const Text("Subscribe")))
           ],
         )),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
