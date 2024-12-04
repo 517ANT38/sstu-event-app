@@ -16,7 +16,7 @@ class News extends StatelessWidget {
           onTap: () {
             NewsAgent.getOne(model.id).then((value) {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => NewsPage(model: value)));
+                  builder: (context) => NewsPage(model: value, idEvent: model.id)));
             });
           },
           child: Container(

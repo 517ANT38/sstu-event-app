@@ -6,7 +6,9 @@ import 'package:sstu_event_app/pages/eventform.dart';
 class NewsPage extends StatelessWidget {
   final NewsModel model;
 
-  const NewsPage({super.key, required this.model});
+  final String idEvent;
+
+  const NewsPage({super.key, required this.model, required this.idEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class NewsPage extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const EventForm()));
+                          MaterialPageRoute(builder: (context) => EventForm(idEvent: idEvent)));
                     },
                     child: const Text("Subscribe")))
           ],

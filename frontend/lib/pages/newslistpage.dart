@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sstu_event_app/api/news.dart';
 import 'package:sstu_event_app/components/bottomnavbar.dart';
@@ -45,13 +47,33 @@ class NewsListPageState extends State<NewsListPage>
 
     faculties = Faculties.values.toSet();
 
-    for (var fac in Faculties.values) {
-      NewsAgent.getAll(fac).then((value) {
-        setState(() {
-          headers.addAll({fac: value});
-        });
-      });
-    }
+    final List<HttpException> exceptions = [];
+
+    () async {
+      final List<Future> promises = [];
+      for (var fac in Faculties.values) {
+        promises.add(() async {
+          try {
+            final news = await NewsAgent.getAll(fac);
+            setState(() {
+              headers.addAll({fac: news});
+            });
+          } catch (exception) {
+            if (exception is HttpException) {
+              exceptions.add(exception);
+            }
+          }
+        }());
+        await Future.wait(promises);
+      }
+      if (exceptions.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Column(children: [
+          const Text("Loading error"),
+          ...exceptions.map((e) => Text(e.message))
+        ])));
+      }
+    }();
   }
 
   @override
@@ -111,17 +133,19 @@ class NewsListPageState extends State<NewsListPage>
                 }),
               Align(
                 alignment: Alignment(animation.value, 0),
-                child: Faclist(onChange: (facs) {
-                  setState(() {
-                    faculties = facs;
-                  });
-                },),
+                child: Faclist(
+                  onChange: (facs) {
+                    setState(() {
+                      faculties = facs;
+                    });
+                  },
+                ),
               )
             ])
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:sstu_event_app/api/eventrequests.dart';
 import 'package:sstu_event_app/components/bottomnavbar.dart';
 import 'package:sstu_event_app/components/custominput.dart';
 import 'package:sstu_event_app/formatters/enumformatter.dart';
 import 'package:sstu_event_app/formatters/intminmaxformatter.dart';
 import 'package:sstu_event_app/formatters/lengthformatter.dart';
 import 'package:sstu_event_app/formatters/nameformatter.dart';
+import 'package:sstu_event_app/models/eventrequest.dart';
 
 class EventForm extends StatefulWidget {
-  const EventForm({super.key});
+  final String idEvent;
+
+  const EventForm({super.key, required this.idEvent});
 
   @override
   State<StatefulWidget> createState() {
@@ -261,10 +265,35 @@ class EventFormState extends State<EventForm> {
                                       ));
                                     });
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Success")));
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
+                                EventRequestsAgent.add(EventRequest(
+                                        secondName: secondNameController.text,
+                                        firstName: firstNameController.text,
+                                        middleName: thirdNameController.text,
+                                        edu: schoolController.text,
+                                        phone: phoneController.text,
+                                        countChild:
+                                            int.parse(countController.text),
+                                        fromClass:
+                                            int.parse(class1Controller.text),
+                                        toClass: class2Controller
+                                                .text.isNotEmpty
+                                            ? int.parse(class2Controller.text)
+                                            : null,
+                                        idEvent: widget.idEvent))
+                                    .then((value) {
+                                  if (value.statusCode == 201) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text("Success")));
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                  }
+                                  else if(value.statusCode == 422) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text("Check your form")));
+                                  }
+                                });
                               }
                             },
                             child: const Text("Отправить")),

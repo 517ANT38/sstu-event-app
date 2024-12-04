@@ -1,22 +1,24 @@
 class EventRequest {
   final String secondName;
   final String firstName;
-  final String middleName;
+  final String? middleName;
   final String edu;
   final String phone;
   final int countChild;
   final int fromClass;
-  final int toClass;
+  final int? toClass;
+  final String idEvent;
 
   EventRequest(
       {required this.secondName,
       required this.firstName,
-      required this.middleName,
+      this.middleName,
       required this.edu,
       required this.phone,
       required this.countChild,
       required this.fromClass,
-      required this.toClass});
+      this.toClass,
+      required this.idEvent});
 
   factory EventRequest.fromJson(Map<String, dynamic> data) {
     return switch (data) {
@@ -28,7 +30,8 @@ class EventRequest {
         'phone': String phone,
         'countChild': int countChild,
         'fromClass': int fromClass,
-        'toClass': int toClass
+        'toClass': int toClass,
+        'idEvent': String idEvent
       } =>
         EventRequest(
             secondName: secondName,
@@ -38,7 +41,8 @@ class EventRequest {
             phone: phone,
             countChild: countChild,
             fromClass: fromClass,
-            toClass: toClass),
+            toClass: toClass,
+            idEvent: idEvent),
       _ => throw const FormatException("Failed to load EventRequest")
     };
   }
@@ -52,7 +56,8 @@ class EventRequest {
       "phone": phone,
       "countChild": countChild,
       "fromClass": fromClass,
-      "toClass": toClass
+      "toClass": toClass,
+      "idEvent": idEvent
     };
   }
 }
