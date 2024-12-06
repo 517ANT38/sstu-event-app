@@ -157,6 +157,7 @@ return [
     */
 
     'mainUrl' => env('MAIN_URL'),
+    'mlApiUrl' => env('ML_API_URL'),
 
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*

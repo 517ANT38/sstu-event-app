@@ -3,22 +3,27 @@
 namespace App\Exceptions;
 
 use Psr\Log\LogLevel;
+use Illuminate\Support\Facades\Log;
+use App\Exceptions\NewNotFoundException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\ConnectionException;
-use App\Exceptions\NewNotFoundException;
 use App\Exceptions\HeadersNewsNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
-    protected $levels = [
-        RequestException::class => LogLevel::CRITICAL,
-        ConnectionException::class => LogLevel::CRITICAL
-
-    ];
 
     public function register(): void
     {
+
+        $this->reportable(function (RequestException $e){
+            $status = $e->response->status();
+            Log::critical("Error status $status");
+        });
+        $this->reportable(function (ConnectionException $e){
+
+            Log::critical("Connect error");
+        });
 
         $this->renderable(function (NewNotFoundException $e) {
             $id = $e->getId();

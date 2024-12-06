@@ -10,4 +10,10 @@ class HttpClient{
         $res->throwIf(fn (Response $response) => !$response->ok());
         return $res->body();
     }
+
+    public function post(string $url,array $data){
+        $res = Http::post($url,$data);
+        $res->throwIf(fn (Response $response) => !$response->ok());
+        return $res->json();
+    }
 }

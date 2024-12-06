@@ -32,7 +32,7 @@ class MlService implements MlServiceInterface{
     public function __construct()
     {
         $this->path = storage_path('app');
-        Storage::makeDirectory('mls');
+        Storage::makeDirectory('mls',0777);
         Storage::makeDirectory('reports');
         $filesystem = new Filesystem("$this->path/mls/sentiment.rbx");
         if(file_exists("$this->path/mls/sentiment.rbx")){
