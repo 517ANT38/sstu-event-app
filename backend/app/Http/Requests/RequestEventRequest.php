@@ -41,7 +41,10 @@ class RequestEventRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        $res = response()->json(['success' => false, 'message' => 'Validation failed'], 422, [], JSON_UNESCAPED_UNICODE);
+        $res = response()->json(['success' => false,
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()],
+            422, [], JSON_UNESCAPED_UNICODE);
         throw new ValidationException($validator, $res);
     }
 }
