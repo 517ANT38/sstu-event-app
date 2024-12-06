@@ -28,7 +28,7 @@ class TrainMl extends Command
     public function handle(MlService $serv)
     {
         $samples = $labels = [];
-        $path = storage_path('app/files');
+        $path = storage_path('app');
         foreach (['positive', 'negative'] as $label) {
             foreach (glob("$path/train/$label/*.txt") as $file) {
                 $samples[] = [file_get_contents($file)];

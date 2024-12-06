@@ -1,35 +1,42 @@
 <?php
 namespace App\Services;
-use Rubix\ML\Datasets\Labeled;
-use Rubix\ML\Datasets\Unlabeled;
+use Rubix\ML\Pipeline;
+use Rubix\ML\Extractors\CSV;
 use Rubix\ML\Loggers\Screen;
 use Rubix\ML\PersistentModel;
-use Rubix\ML\Pipeline;
-use Rubix\ML\Transformers\TextNormalizer;
-use Rubix\ML\Transformers\WordCountVectorizer;
+use Rubix\ML\Datasets\Labeled;
 use Rubix\ML\Tokenizers\NGram;
+use Rubix\ML\Datasets\Unlabeled;
+use Rubix\ML\Persisters\Filesystem;
+use Illuminate\Support\Facades\Storage;
+use Rubix\ML\NeuralNet\Layers\Dense;
+use Rubix\ML\NeuralNet\Layers\PReLU;
+use Rubix\ML\NeuralNet\Layers\BatchNorm;
+use Rubix\ML\NeuralNet\Layers\Activation;
+use Rubix\ML\NeuralNet\Optimizers\AdaMax;
+use Rubix\ML\Transformers\TextNormalizer;
 use Rubix\ML\Transformers\TfIdfTransformer;
 use Rubix\ML\Transformers\ZScaleStandardizer;
 use Rubix\ML\Classifiers\MultilayerPerceptron;
-use Rubix\ML\NeuralNet\Layers\Dense;
-use Rubix\ML\NeuralNet\Layers\Activation;
-use Rubix\ML\NeuralNet\Layers\PReLU;
-use Rubix\ML\NeuralNet\Layers\BatchNorm;
-use Rubix\ML\NeuralNet\ActivationFunctions\LeakyReLU;
-use Rubix\ML\NeuralNet\Optimizers\AdaMax;
-use Rubix\ML\Persisters\Filesystem;
-use Rubix\ML\Extractors\CSV;
+use Rubix\ML\Transformers\WordCountVectorizer;
 use Rubix\ML\CrossValidation\Reports\AggregateReport;
 use Rubix\ML\CrossValidation\Reports\ConfusionMatrix;
+use Rubix\ML\NeuralNet\ActivationFunctions\LeakyReLU;
 use Rubix\ML\CrossValidation\Reports\MulticlassBreakdown;
+
 class MlService implements MlServiceInterface{
 
     private PersistentModel $estimator;
+    private string $path;
 
     public function __construct()
     {
-        if(file_exists('sentiment.rbx')){
-            $this->estimator = PersistentModel::load(new Filesystem('sentiment.rbx'));
+        $this->path = storage_path('app');
+        Storage::makeDirectory('mls');
+        Storage::makeDirectory('reports');
+        $filesystem = new Filesystem("$this->path/mls/sentiment.rbx");
+        if(file_exists("$this->path/mls/sentiment.rbx")){
+            $this->estimator = PersistentModel::load($filesystem);
         }
         else
             $this->estimator = new PersistentModel(
@@ -51,7 +58,7 @@ class MlService implements MlServiceInterface{
                     new Dense(50),
                     new PReLU(),
                 ], 256, new AdaMax(0.0001))),
-                new Filesystem('sentiment.rbx',true)
+                $filesystem
             );
         $this->estimator->setLogger(new Screen());
     }
@@ -59,7 +66,7 @@ class MlService implements MlServiceInterface{
     public function train(Labeled $dataset){
         $this->estimator->train($dataset);
 
-        $extractor = new CSV('progress.csv', true);
+        $extractor = new CSV("$this->path/reports/progress.csv", true);
 
         $extractor->export($this->estimator->steps());
         $this->estimator->save();
@@ -71,7 +78,7 @@ class MlService implements MlServiceInterface{
             new ConfusionMatrix(),
         ]);
         $results = $report->generate($predictions, $dataset->labels());
-        $results->toJSON()->saveTo(new Filesystem('report.json'));
+        $results->toJSON()->saveTo(new Filesystem("$this->path/reports/report.json"));
     }
     public function predict(Unlabeled $dataset){
         return current($this->estimator->predict($dataset));
