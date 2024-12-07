@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Services\NewsService;
 use Illuminate\Console\Command;
 use App\Http\Clients\HttpClient;
-use App\Models\DTO\HeaderNewDto;
 use App\Services\NewsParserService;
 use App\Services\NewsSstuStartParser;
 use Illuminate\Support\Facades\File;
@@ -26,38 +25,62 @@ class GetAndSetToStorageNews extends Command
     protected $description = 'Get News from site sstu and set to storage';
 
     private array $mapSiteUrls;
+    private NewsParserService $newsparser;
+    private NewsSstuStartParser $startsstuparser;
+    private NewsService $service;
+    private HttpClient $client;
 
-    public function __construct()
+    public function __construct(NewsParserService $newsparser,NewsSstuStartParser $startsstuparser,NewsService $service,HttpClient $client)
     {
         parent::__construct();
         $this->mapSiteUrls = File::json(base_path('site_sstu.json'));
+        $this->newsparser = $newsparser;
+        $this->startsstuparser = $startsstuparser;
+        $this->service = $service;
+        $this->client =$client;
 
     }
 
-    public function handle(NewsParserService $newsparser,NewsSstuStartParser $startsstuparser,NewsService $service,HttpClient $client)
+    public function handle()
     {
         $mailUrl = Config("app.mainUrl");
         foreach($this->mapSiteUrls as $siteName => $siteUrl){
-            $resPageNews = $client->get($siteUrl);
+            $resPageNews = $this->client->get($siteUrl);
             $rootUrl = $siteName == 'sstu' ? $mailUrl : $siteUrl;
             if ($siteName == "start-sstu")
-                $tmpNewsHeaders = $startsstuparser->parseHeaders($resPageNews,$rootUrl);
+                [$tmpNews,$tmpNewsHeaders] = $this->parseStartSSTU($resPageNews,$rootUrl);
             else
-                $tmpNewsHeaders = $newsparser->parseAllUrlFromHeadersNews($resPageNews,$rootUrl);
+                [$tmpNews,$tmpNewsHeaders] = $this->parseNewsSSTU($resPageNews,$rootUrl);
             $news = $newsHeaders = [];
-            foreach($tmpNewsHeaders as $head){
-                if ($siteName == "start-sstu")
-                    $tmpNewsHeaders = $startsstuparser->parseNew($resPageNews,$head->url,$rootUrl);
-                else{
-                    $page = $client->get($head->url);
-                    $new = $newsparser->parseOneNew($page,$rootUrl);
-                }
-                $checkRes = $client->post(Config('app.mlApiUrl'),['text'=>str_replace('\r\n','',$new->desc)]);
+            for($i=0;$i<count($tmpNewsHeaders);$i++){
+                $checkRes = $this->client->post(Config('app.mlApiUrl'),['text'=>str_replace('\r\n','',$tmpNews[$i]->desc)]);
                 if ($checkRes['result'] != 'positive') continue;
-                array_push($news,$new);array_push($newsHeaders,$head);
+                array_push($newsHeaders,$tmpNewsHeaders[$i]);
+                array_push($news,$tmpNews[$i]);
             }
-            $newsHeadersWithIds = $service->addHeadersNews($siteName,$newsHeaders);
-            array_walk($newsHeadersWithIds,fn($head,$i)=>$service->setNew($head->id,$news[$i]));
+            $newsHeadersWithIds = $this->service->addHeadersNews($siteName,$newsHeaders);
+            array_walk($newsHeadersWithIds,fn($head,$i)=>$this->service->setNew($head->id,$news[$i]));
         }
+    }
+
+    private function parseStartSSTU(string $resPageNews, string $rootUrl){
+        $tmpNewsHeaders = $this->startsstuparser->parseHeaders($resPageNews,$rootUrl);
+        $tmpNews = [];
+        foreach($tmpNewsHeaders as $head){
+            $new = $this->startsstuparser->parseNew($resPageNews,$head->url,$rootUrl);
+            array_push($tmpNews,$new);
+        }
+        return [$tmpNews,$tmpNewsHeaders];
+    }
+
+    private function parseNewsSSTU(string $resPageNews,string $rootUrl){
+        $tmpNewsHeaders = $this->newsparser->parseAllUrlFromHeadersNews($resPageNews,$rootUrl);
+        $tmpNews = [];
+        foreach($tmpNewsHeaders as $head){
+            $page = $this->client->get($head->url);
+            $new = $this->newsparser->parseOneNew($page,$rootUrl);
+            array_push($tmpNews,$new);
+        }
+        return [$tmpNews,$tmpNewsHeaders];
     }
 }
