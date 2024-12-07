@@ -1,5 +1,5 @@
 build:
-	# DOCKER_BUILDKIT=1 docker build --no-cache -f backend/docker/laravel/Dockerfile -t backend backend/
+	DOCKER_BUILDKIT=1 docker build --no-cache -f backend/docker/laravel/Dockerfile -t backend backend/
 	DOCKER_BUILDKIT=1 docker build --no-cache -f ml_api/docker/laravel/Dockerfile -t ml_api ml_api/
 up:
 	docker-compose up -d
