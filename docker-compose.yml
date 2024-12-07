@@ -50,8 +50,6 @@ services:
       container_name: web-mlapi
       restart: unless-stopped
       tty: true
-      ports:
-            - ${APP_PORT:-8090}:80
       volumes:
       - ./ml_api/:/var/www
       - ./ml_api/docker/nginx/:/etc/nginx/conf.d/
