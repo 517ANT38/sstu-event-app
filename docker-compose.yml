@@ -45,6 +45,9 @@ services:
             - 8000:80
         networks:
             - backend
+        depends_on:
+          laravel:
+            condition: service_started
  
     mongodb:
         image: 'mongo'
