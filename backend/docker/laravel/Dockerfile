@@ -1,17 +1,31 @@
-FROM php:8.3-fpm-alpine
+FROM composer AS builder
+WORKDIR /vendor
+COPY composer.json composer.json
+RUN composer install  \
+--ignore-platform-reqs \
+--no-interaction \
+--no-plugins \
+--no-scripts \
+--prefer-dist
 
+FROM php:8.3-apache
 WORKDIR /var/www
-RUN chmod 777 /var/www
+
 RUN set -ex \
- && apk update \
- && apk upgrade \
- && apk --no-cache add $PHPIZE_DEPS openssl-dev libgcrypt-dev libxml2-dev zip libzip-dev libstdc++ bash \
+ && apt-get update \
+ && apt-get install -y libgcrypt-dev libxml2-dev zip libzip-dev cron \
  && docker-php-ext-configure zip \
  && docker-php-ext-install zip bcmath xml
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN pecl install mongodb redis \
 && docker-php-ext-enable mongodb \
 && docker-php-ext-enable redis
 
-CMD ["php-fpm"]
+COPY . .
+COPY --from=builder vendor/ vendor/
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+COPY docker/laravel/apache-config.conf /etc/apache2/sites-available/000-default.conf
+RUN a2enmod rewrite
+
+CMD ["apache2-foreground"]
