@@ -16,7 +16,7 @@ services:
       container_name: mlapi
       restart: unless-stopped
       volumes:
-        - ./ml_api/:/var/www
+        - ./ml_api/storage/app:/var/www/storage/app
       networks:
         - backend
 
@@ -41,17 +41,7 @@ services:
             - 8000:80
         networks:
             - backend
-    web1:
-      image: nginx:alpine
-      container_name: web-mlapi
-      restart: unless-stopped
-      tty: true
-      volumes:
-      - ./ml_api/:/var/www
-      - ./ml_api/docker/nginx/:/etc/nginx/conf.d/
-      networks:
-          - backend
-
+ 
     mongodb:
         image: 'mongo'
         container_name: mongodb
