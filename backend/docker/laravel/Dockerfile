@@ -1,5 +1,5 @@
 FROM composer AS builder
-WORKDIR /vendor
+WORKDIR /app
 COPY composer.json composer.json
 RUN composer install  \
 --ignore-platform-reqs \
@@ -22,7 +22,7 @@ RUN pecl install mongodb redis \
 && docker-php-ext-enable redis
 
 COPY . .
-COPY --from=builder vendor/ vendor/
+COPY --from=builder /app/vendor/ vendor/
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 COPY docker/laravel/apache-config.conf /etc/apache2/sites-available/000-default.conf
