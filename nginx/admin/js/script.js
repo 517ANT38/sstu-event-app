@@ -11,7 +11,7 @@ const options = {
   };
 async function fetchData() {
     try {
-        const response = await fetch('/api/requestsEvents');
+        const response = await fetch('http://localhost:8080/api/requestsEvents');
         const data = await response.json();
         renderTable(data);
     } catch (error) {
