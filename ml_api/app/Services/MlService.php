@@ -41,7 +41,7 @@ class MlService implements MlServiceInterface{
             $this->estimator = new PersistentModel(
                 new Pipeline([
                     new TextNormalizer(),
-                    new WordCountVectorizer(5000, 2, 0.1, new NGram(1, 2)),
+                    new WordCountVectorizer(10000, 2, 0.1, new NGram(1, 2)),
                     new TfIdfTransformer(),
                     new ZScaleStandardizer(),
                 ], new MultilayerPerceptron([
@@ -56,7 +56,7 @@ class MlService implements MlServiceInterface{
                     new PReLU(),
                     new Dense(50),
                     new PReLU(),
-                ], 256, new AdaMax(0.0001))),
+                ], 256, new AdaMax(0.0003))),
                 $filesystem
             );
         $this->estimator->setLogger(new Screen());
