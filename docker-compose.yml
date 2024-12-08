@@ -8,9 +8,10 @@ services:
         networks:
             - backend
         depends_on:
-            - mongodb
-            - redis
-            - mlapi
+            mongodb:
+              condition: service_healthy
+            redis:
+              condition: service_healthy
     mlapi:
       image: ml_api
       container_name: mlapi
@@ -27,7 +28,10 @@ services:
         networks:
             - backend
         depends_on:
-            - redis
+            redis:
+              condition: service_healthy
+            mlapi:
+              condition: service_started
 
     web:
         image: nginx:alpine
