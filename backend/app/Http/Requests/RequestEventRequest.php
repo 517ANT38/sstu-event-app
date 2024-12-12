@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 use App\Rules\PhoneRule;
+use App\Rules\IsRepresentativeRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
+
 class RequestEventRequest extends FormRequest
 {
     /**
@@ -23,7 +25,8 @@ class RequestEventRequest extends FormRequest
             'countChild' => 'required|integer|min:1|max:100',
             'fromClass' => 'required|integer|min:1|max:11',
             'toClass' => 'integer|min:1|max:11|nullable',
-            'idEvent' => 'required|string'
+            'idEvent' => 'required|string',
+            'isRepresentative' => ['required','boolean',new IsRepresentativeRule]
         ];
     }
 

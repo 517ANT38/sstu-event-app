@@ -15,7 +15,8 @@ class RequestEvent extends Model
             'countChild',
             'fromClass',
             'toClass',
-            'idEvent'
+            'idEvent',
+            'isRepresentative'
         ];
     protected $hidden = ['id','updated_at'];
 }
