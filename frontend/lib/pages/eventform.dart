@@ -28,6 +28,7 @@ class EventFormState extends State<EventForm> {
   final countController = TextEditingController();
   final class1Controller = TextEditingController();
   final class2Controller = TextEditingController();
+  bool _isChecked = false;
 
   final fkey = GlobalKey<FormState>();
 
@@ -210,6 +211,19 @@ class EventFormState extends State<EventForm> {
                     fInterval,
 
                     sInterval,
+                    CheckboxListTile(
+                      title:const Text("I am an official representative/parent/guardian who consents to the processing of my and my child’s personal data"),
+                      value: _isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _isChecked = value ?? false; // Обновляем состояние CheckBox
+                        });
+                      },
+                    ),
+
+                    fInterval,
+
+                    sInterval,
 
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Container(
@@ -253,6 +267,9 @@ class EventFormState extends State<EventForm> {
                                     "Max class must be less than min class");
                               }
 
+                              if (!_isChecked) {
+                                errors.add("The consent to processing flag is not checked");
+                              }
                               if (errors.isNotEmpty) {
                                 showDialog(
                                     context: context,
@@ -279,7 +296,8 @@ class EventFormState extends State<EventForm> {
                                                 .text.isNotEmpty
                                             ? int.parse(class2Controller.text)
                                             : null,
-                                        idEvent: widget.idEvent))
+                                        idEvent: widget.idEvent,
+                                        isRepresentative: _isChecked))
                                     .then((value) {
                                   if (value.statusCode == 201) {
                                     ScaffoldMessenger.of(context).showSnackBar(
