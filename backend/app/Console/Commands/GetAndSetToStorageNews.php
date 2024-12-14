@@ -58,8 +58,7 @@ class GetAndSetToStorageNews extends Command
                 array_push($newsHeaders,$tmpNewsHeaders[$i]);
                 array_push($news,$tmpNews[$i]);
             }
-            $newsHeadersWithIds = $this->service->addHeadersNews($siteName,$newsHeaders);
-            array_walk($newsHeadersWithIds,fn($head,$i)=>$this->service->setNew($head->id,$news[$i]));
+            $this->service->addNews($siteName,$newsHeaders,$news);
         }
     }
 

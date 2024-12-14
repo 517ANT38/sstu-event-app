@@ -8,12 +8,12 @@ class NewsService{
 
     public function __construct(private NewsRepositoryInterface $repo){}
 
-    public function addHeadersNews(string $siteName, array $news){
-        foreach($news as $new){
+    public function addNews(string $siteName, array $headNews,array $news){
+        foreach($headNews as $new){
             $new->id = bin2hex($new->url.'_'.date(DATE_ATOM));
         }
-        $this->repo->addHeadersNews($siteName,$news);
-        return $news;
+        array_walk($headNews,fn($head,$i)=>$this->setNew($head->id,$news[$i]));
+        $this->repo->addHeadersNews($siteName,$headNews);
     }
 
     public function getHeadersNews(string $siteName){
@@ -32,7 +32,7 @@ class NewsService{
         return $new;
     }
 
-    public function setNew(string $id,NewsDto $dto){
+    private function setNew(string $id,NewsDto $dto){
         $this->repo->setNew($id,$dto);
     }
 
