@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_local_notifications: ^18.0.1
+  shared_preferences: ^2.3.3
   http: ^1.2.2
 
 dev_dependencies:

@@ -28,12 +28,12 @@ class EventRequest {
       {
         'firstName': String firstName,
         'secondName': String secondName,
-        'middleName': String middleName,
+        'middleName': String? middleName,
         'edu': String edu,
         'phone': String phone,
         'countChild': int countChild,
         'fromClass': int fromClass,
-        'toClass': int toClass,
+        'toClass': int? toClass,
         'idEvent': String idEvent,
         'isRepresentative':bool isRepresentative
       } =>

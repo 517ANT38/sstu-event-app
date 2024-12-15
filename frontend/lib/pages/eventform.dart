@@ -7,6 +7,7 @@ import 'package:sstu_event_app/formatters/intminmaxformatter.dart';
 import 'package:sstu_event_app/formatters/lengthformatter.dart';
 import 'package:sstu_event_app/formatters/nameformatter.dart';
 import 'package:sstu_event_app/models/eventrequest.dart';
+import 'package:sstu_event_app/services/sharedpreferencesservice.dart';
 
 class EventForm extends StatefulWidget {
   final String idEvent;
@@ -282,7 +283,7 @@ class EventFormState extends State<EventForm> {
                                       ));
                                     });
                               } else {
-                                EventRequestsAgent.add(EventRequest(
+                                final evreq =EventRequest(
                                         secondName: secondNameController.text,
                                         firstName: firstNameController.text,
                                         middleName: thirdNameController.text,
@@ -297,9 +298,12 @@ class EventFormState extends State<EventForm> {
                                             ? int.parse(class2Controller.text)
                                             : null,
                                         idEvent: widget.idEvent,
-                                        isRepresentative: _isChecked))
+                                        isRepresentative: _isChecked);
+                                final serv = Sharedpreferencesservice.get();
+                                EventRequestsAgent.add(evreq)
                                     .then((value) {
                                   if (value.statusCode == 201) {
+                                    serv.addSubscriptions(evreq);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                             content: Text("Success")));
