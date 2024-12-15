@@ -36,6 +36,8 @@ class NewsParserService{
             $desc = trim($desc);
         }
         $date = $crw->filter('.news-detail div.date>span')->text();
+        $isfind = preg_match('/\d{2}\.\d{2}\.\d{2,4}/',$date,$matches);
+        $date = $isfind ? $matches[0] : $date;
         return new NewsDto($imgsUrls,$title,$desc,$date);
     }
 
