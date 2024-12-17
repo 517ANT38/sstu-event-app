@@ -5,8 +5,6 @@ use Symfony\Component\DomCrawler\Crawler;
 use App\Models\DTO\NewsDto;
 use App\Models\DTO\HeaderNewDto;
 
-use function Laravel\Prompts\text;
-
 class NewsParserService{
 
     public function parseAllUrlFromHeadersNews(string $html,string $mainUrl) {
@@ -16,10 +14,24 @@ class NewsParserService{
                 null,
                 $node->filter('img')->image()->getUri(),
                 $node->filter('a')->attr('title'),
-                $node->filter('a')->link()->getUri()
+                $node->filter('a')->link()->getUri(),
+                null
             ));
 
     }
+
+    public function parseEvents(string $html){
+        $crw = new Crawler($html);
+        return $crw->filter('div.event.news-item.row')
+        ->each(fn(Crawler $node, $i)=>new HeaderNewDto(
+                null,
+                null,
+                $node->filter('a')->text(),
+                str_replace("http","https",$node->filter('a')->link()->getUri()),
+                $node->filter('.date')->text()
+        ));
+    }
+
 
     public function parseOneNew(string $html,?string $mainUrl){
         $crw = new Crawler($html,$mainUrl);

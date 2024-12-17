@@ -5,9 +5,10 @@ namespace App\Models\DTO;
 class HeaderNewDto{
     public function __construct(
         public ?string $id,
-        public string $imgUrl,
+        public ?string $imgUrl,
         public string $title,
-        public string $url
+        public string $url,
+        public ?string $date
     ){}
     public static function transform(array $args)
     {
@@ -15,7 +16,8 @@ class HeaderNewDto{
             $args['id'],
             $args['imgUrl'],
             $args['title'],
-            $args['url']
+            $args['url'],
+            $args['date']
         );
     }
 }

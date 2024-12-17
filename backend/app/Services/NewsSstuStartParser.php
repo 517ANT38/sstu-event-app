@@ -14,7 +14,8 @@ class NewsSstuStartParser{
                 null,
                 $node->filter('img')->image()->getUri(),
                 $node->filter('h3')->text(),
-                $node->filter('a')->attr('href')
+                $node->filter('a')->attr('href'),
+                null
             );
         });
     }

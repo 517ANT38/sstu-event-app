@@ -46,11 +46,12 @@ class GetAndSetToStorageNews extends Command
         $mailUrl = Config("app.mainUrl");
         foreach($this->mapSiteUrls as $siteName => $siteUrl){
             $resPageNews = $this->client->get($siteUrl);
-            $rootUrl = $siteName == 'sstu' ? $mailUrl : $siteUrl;
             if ($siteName == "start-sstu")
-                [$tmpNews,$tmpNewsHeaders] = $this->parseStartSSTU($resPageNews,$rootUrl);
+                [$tmpNews,$tmpNewsHeaders] = $this->parseStartSSTU($resPageNews,$siteUrl);
+            else if($siteName == "events")
+                [$tmpNews,$tmpNewsHeaders] = $this->parseEventsSSTU($resPageNews,$mailUrl);
             else
-                [$tmpNews,$tmpNewsHeaders] = $this->parseNewsSSTU($resPageNews,$rootUrl);
+                [$tmpNews,$tmpNewsHeaders] = $this->parseNewsSSTU($resPageNews,$siteName == 'sstu' ? $mailUrl : $siteUrl);
             $news = $newsHeaders = [];
             for($i=0;$i<count($tmpNewsHeaders);$i++){
                 $checkRes = $this->client->post(Config('app.mlApiUrl'),['text'=>str_replace('\r\n','',$tmpNews[$i]->desc)]);
@@ -74,6 +75,17 @@ class GetAndSetToStorageNews extends Command
 
     private function parseNewsSSTU(string $resPageNews,string $rootUrl){
         $tmpNewsHeaders = $this->newsparser->parseAllUrlFromHeadersNews($resPageNews,$rootUrl);
+        $tmpNews = [];
+        foreach($tmpNewsHeaders as $head){
+            $page = $this->client->get($head->url);
+            $new = $this->newsparser->parseOneNew($page,$rootUrl);
+            array_push($tmpNews,$new);
+        }
+        return [$tmpNews,$tmpNewsHeaders];
+    }
+
+    private function parseEventsSSTU(string $resPageNews,string $rootUrl){
+        $tmpNewsHeaders = $this->newsparser->parseEvents($resPageNews);
         $tmpNews = [];
         foreach($tmpNewsHeaders as $head){
             $page = $this->client->get($head->url);

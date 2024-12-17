@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command("app:get-and-set-to-storage-news")->everySixHours();
+        $schedule->command("app:get-and-set-to-storage-news")->everyFourHours();
     }
 
     /**
