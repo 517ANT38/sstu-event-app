@@ -28,7 +28,7 @@ class BottomNavBar extends StatelessWidget {
                 ),
               );
             },
-            child: const Text("Your subscribes"),
+            child: const Text("Ваши подписки"),
           ),
         )
       ],

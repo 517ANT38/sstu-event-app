@@ -14,7 +14,7 @@ class NewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Main"),
+        title: const Text("Новость"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -43,7 +43,7 @@ class NewsPage extends StatelessWidget {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => EventForm(idEvent: idEvent)));
                     },
-                    child: const Text("Subscribe")))
+                    child: const Text("Подписаться")))
           ],
         )),
       ),

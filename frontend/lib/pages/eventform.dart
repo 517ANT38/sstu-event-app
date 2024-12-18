@@ -49,7 +49,7 @@ class EventFormState extends State<EventForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Main"),
+        title: const Text("Регистрация"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -66,11 +66,11 @@ class EventFormState extends State<EventForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                        "Enter data in form for subscribe. We callback you after few time."),
+                        "Введите данные в форму для регистрации на мероприятие. Мы свяжемся с вами позднее."),
 
                     sInterval,
 
-                    const Text("What is your name?"),
+                    const Text("Как вас зовут?"),
 
                     sInterval,
 
@@ -78,7 +78,7 @@ class EventFormState extends State<EventForm> {
                     CustomInput(
                       controller: firstNameController,
                       keyboardType: TextInputType.name,
-                      placeholder: "First name",
+                      placeholder: "Имя",
                       inputFormatters: [NameFormatter.get()],
                       required: true,
                     ),
@@ -89,7 +89,7 @@ class EventFormState extends State<EventForm> {
                     CustomInput(
                       controller: secondNameController,
                       keyboardType: TextInputType.name,
-                      placeholder: "Last name",
+                      placeholder: "Фамилия",
                       inputFormatters: [NameFormatter.get()],
                       required: true,
                     ),
@@ -100,7 +100,7 @@ class EventFormState extends State<EventForm> {
                     CustomInput(
                       controller: thirdNameController,
                       keyboardType: TextInputType.name,
-                      placeholder: "Middle name",
+                      placeholder: "Отчество",
                       inputFormatters: [NameFormatter.get()],
                     ),
 
@@ -108,7 +108,7 @@ class EventFormState extends State<EventForm> {
 
                     sInterval,
 
-                    const Text("Where are you from?"),
+                    const Text("Откуда вы?"),
 
                     sInterval,
 
@@ -123,7 +123,7 @@ class EventFormState extends State<EventForm> {
 
                     sInterval,
 
-                    const Text("How many kids want to visit us?"),
+                    const Text("Сколько детей посетят нас?"),
 
                     sInterval,
 
@@ -138,7 +138,7 @@ class EventFormState extends State<EventForm> {
 
                     sInterval,
 
-                    const Text("What classes of children are coming to us?"),
+                    const Text("Какие классы придут к нам?"),
 
                     sInterval,
 
@@ -149,7 +149,7 @@ class EventFormState extends State<EventForm> {
                               const BoxConstraints.tightFor(width: 120),
                           child: CustomInput(
                             controller: class1Controller,
-                            placeholder: "min",
+                            placeholder: "С",
                             keyboardType: countType,
                             required: true,
                             inputFormatters: [
@@ -176,7 +176,7 @@ class EventFormState extends State<EventForm> {
                             enabled: class1Controller.text.isNotEmpty &&
                                 int.parse(class1Controller.text) != 11,
                             controller: class2Controller,
-                            placeholder: 'max',
+                            placeholder: 'По',
                             keyboardType: countType,
                             inputFormatters: [
                               EnumFormatter(values: [
@@ -196,7 +196,7 @@ class EventFormState extends State<EventForm> {
 
                     sInterval,
 
-                    const Text("What is your phone number?"),
+                    const Text("Ваш номер телефона?"),
 
                     sInterval,
 
@@ -213,7 +213,7 @@ class EventFormState extends State<EventForm> {
 
                     sInterval,
                     CheckboxListTile(
-                      title:const Text("I am an official representative/parent/guardian who consents to the processing of my and my child’s personal data"),
+                      title:const Text("Я родитель/опекун/официальный представитель даю согласие на обработку своих персональных данных и персональных данных ребенка согласно [политике] об обработке персональных данных"),
                       value: _isChecked,
                       onChanged: (bool? value) {
                         setState(() {
@@ -237,39 +237,39 @@ class EventFormState extends State<EventForm> {
                               List<String> errors = [];
 
                               if (phoneController.text.isEmpty) {
-                                errors.add("Empty phone number");
+                                errors.add("Введите номер телефона");
                               } else if (!RegExp(r"^(7|8)\d{10}$")
                                   .hasMatch(phoneController.text)) {
-                                errors.add("Incorrect phone number");
+                                errors.add("Номер телефона указан в неверном формате");
                               }
 
                               if (firstNameController.text.isEmpty) {
-                                errors.add("Empty first name");
+                                errors.add("Введите имя");
                               }
 
                               if (secondNameController.text.isEmpty) {
-                                errors.add("Empty last name");
+                                errors.add("Введите фамилию");
                               }
 
                               if (schoolController.text.isEmpty) {
-                                errors.add("Empty school name");
+                                errors.add("Введите название школы");
                               }
 
                               if (countController.text.isEmpty) {
-                                errors.add("Empty kids count");
+                                errors.add("Введите количество детей");
                               }
 
                               if (class1Controller.text.isEmpty) {
-                                errors.add("Empty min class");
+                                errors.add("Введите минимальный класс");
                               } else if (class2Controller.text.isNotEmpty &&
                                   int.parse(class2Controller.text) <=
                                       int.parse(class1Controller.text)) {
                                 errors.add(
-                                    "Max class must be less than min class");
+                                    "Максимальный класс должен быть больше минимального");
                               }
 
                               if (!_isChecked) {
-                                errors.add("The consent to processing flag is not checked");
+                                errors.add("Необходимо ваше согласие на обработку данных");
                               }
                               if (errors.isNotEmpty) {
                                 showDialog(
@@ -306,14 +306,14 @@ class EventFormState extends State<EventForm> {
                                     serv.addSubscriptions(evreq);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content: Text("Success")));
+                                            content: Text("Вы зарегистрированы на мероприятие!")));
                                     Navigator.of(context)
                                         .popUntil((route) => route.isFirst);
                                   }
                                   else if(value.statusCode == 422) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content: Text("Check your form")));
+                                            content: Text("Проверьте корректность заполнения формы")));
                                   }
                                 });
                               }

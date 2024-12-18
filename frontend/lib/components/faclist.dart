@@ -61,7 +61,7 @@ class FaclistState extends State<Faclist> {
                 onPressed: () {
                   updateSelected(Faculties.sstu);
                 },
-                child: const Text("SSTU")),
+                child: Text(faclabels[Faculties.sstu]!.toUpperCase())),
           ),
           ...Faculties.values.skip(1).map((e) => DecoratedBox(
               decoration: BoxDecoration(
@@ -70,14 +70,14 @@ class FaclistState extends State<Faclist> {
                   onPressed: () {
                     updateSelected(e);
                   },
-                  child: Text(e.name)))),
+                  child: Text(faclabels[e]!.toUpperCase())))),
           Container(
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.inversePrimary,
                   borderRadius: const BorderRadius.only(
                       bottomRight: Radius.circular(15))),
               child: TextButton(
-                  onPressed: clearSelected, child: const Text("RESET"))),
+                  onPressed: clearSelected, child: const Text("СБРОСИТЬ"))),
         ],
       ),
     );

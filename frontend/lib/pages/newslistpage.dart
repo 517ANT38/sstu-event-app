@@ -69,7 +69,7 @@ class NewsListPageState extends State<NewsListPage>
       if (exceptions.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Column(children: [
-          const Text("Loading error"),
+          const Text("Ошибка загрузки"),
           ...exceptions.map((e) => Text(e.message))
         ])));
       }
@@ -80,7 +80,7 @@ class NewsListPageState extends State<NewsListPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Main"),
+        title: const Text("Главная"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -97,7 +97,7 @@ class NewsListPageState extends State<NewsListPage>
                 const SizedBox(height: 10),
                 ConstrainedBox(
                     constraints: const BoxConstraints.tightFor(width: 310),
-                    child: const Text("Your news")),
+                    child: const Text("Ваши новости")),
                 const SizedBox(height: 10),
                 Expanded(
                     child: SingleChildScrollView(
