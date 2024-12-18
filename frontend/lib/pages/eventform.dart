@@ -115,7 +115,7 @@ class EventFormState extends State<EventForm> {
                     // Учебное заведение
                     CustomInput(
                       controller: schoolController,
-                      placeholder: "School",
+                      placeholder: "Учебное заведение",
                       required: true,
                     ),
 
@@ -131,7 +131,7 @@ class EventFormState extends State<EventForm> {
                     CustomInput(
                       controller: countController,
                       keyboardType: countType,
-                      placeholder: "Count",
+                      placeholder: "Количество детей",
                       inputFormatters: [IntMinMaxFormatter(min: 1, max: 100)],
                       required: true,
                     ),
@@ -204,7 +204,7 @@ class EventFormState extends State<EventForm> {
                     CustomInput(
                       controller: phoneController,
                       keyboardType: TextInputType.phone,
-                      placeholder: "8 888 909-11-22",
+                      placeholder: "88889091122",
                       inputFormatters: [LengthFormatter(length: 20)],
                       required: true,
                     ),
