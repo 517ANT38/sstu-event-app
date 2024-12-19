@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Заявки на мероприятия</h1>
+        <div id="alert-box" class="alert" style="display: none;">
+            <button id="close-alert" class="close-btn">&times;</button>
+            <p>
+                <span id="alert-url" class="alert-details"></span><br>
+                <span id="alert-date" class="alert-details"></span>
+            </p>
+        </div>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>ID мероприятия</th>
+                    <th>Название мероприятия</th>
+                    <th>ФИО ответственного</th>
+                    <th>Учебное заведение</th>
+                    <th>Номер телефона</th>
+                    <th>Количество детей</th>
+                    <th>Начальный класс</th>
+                    <th>Конечный класс</th>
+                    <th>Дата и время регистрации</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- JSON данные будут здесь -->
+            </tbody>
+        </table>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

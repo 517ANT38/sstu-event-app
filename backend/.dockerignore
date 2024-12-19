@@ -1,0 +1,3 @@
+docker/
+vendor/
+!docker/laravel/apache-config.conf
