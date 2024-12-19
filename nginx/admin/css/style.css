@@ -72,4 +72,6 @@ table th {
     font-size: 14px;
     color: #f9f9f9;
     opacity: 0.8;
+    word-break: break-all;
+    text-decoration: none;
 }
