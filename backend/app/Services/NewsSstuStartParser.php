@@ -14,15 +14,16 @@ class NewsSstuStartParser{
                 null,
                 $node->filter('img')->image()->getUri(),
                 $node->filter('h3')->text(),
-                $node->filter('a')->attr('href'),
+                $node->filter('a')->link()->getUri(),
                 null
             );
         });
     }
 
-    public function parseNew(string $html,string $urlId,?string $mainUrl){
+    public function parseNew(string $html,string $urlNew,?string $mainUrl){
         $crawler = new Crawler($html,$mainUrl);
-        $node = $crawler->filter("$urlId");
+        $urlId = explode("#",$urlNew)[1];
+        $node = $crawler->filter("#$urlId");
         $descs=array_map(fn($it)=>trim($it),$node->filter('.about-text > p')->each(fn($it)=>$it->text()));
         $descs=array_filter($descs,fn($it)=>$it !== '');
         return new NewsDto(
