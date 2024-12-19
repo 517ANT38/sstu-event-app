@@ -16,6 +16,7 @@ class RequestEvent extends Model
             'fromClass',
             'toClass',
             'idEvent',
+            'nameEvent',
             'isRepresentative'
         ];
     protected $hidden = ['id','updated_at'];

@@ -44,9 +44,9 @@ function renderTable(data) {
 
     data.forEach(item => {
         const row = document.createElement('tr');
-        console.log(item)
         row.innerHTML = `
             <td style='cursor: pointer;' onclick='alertDecodeIdEvent("${item.idEvent}")'>${item.idEvent.slice(0,5)}</td>
+            <td>${item.nameEvent??'Не задано'}</td>
             <td>${item.secondName} ${item.firstName} ${item.middleName??''}</td>
             <td>${item.edu}</td>
             <td>${item.phone}</td>
