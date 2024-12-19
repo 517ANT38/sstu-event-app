@@ -13,7 +13,7 @@ WORKDIR /var/www
 
 RUN set -ex \
  && apt-get update \
- && apt-get install -y libgcrypt-dev libxml2-dev zip libzip-dev cron \
+ && apt-get install -y libcurl4-openssl-dev pkg-config libssl-dev libgcrypt-dev libxml2-dev zip libzip-dev cron \
  && docker-php-ext-configure zip \
  && docker-php-ext-install zip bcmath xml
 

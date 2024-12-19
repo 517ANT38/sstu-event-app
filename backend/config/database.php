@@ -37,8 +37,7 @@ return [
 
         'mongodb' => [
             'dsn' => env('MONGODB_URI','mongodb://localhost/'), // uses the value of the DB_URI environment variable
-            'driver' => 'mongodb',
-            'database' => env('MONGODB_DATABASE','laravel'),
+            'driver' => 'mongodb'
         ],
 
         'sqlite' => [

@@ -53,9 +53,8 @@ services:
         image: 'mongo'
         container_name: mongodb
         restart: unless-stopped
-        environment:
-            - 'MONGODB_INITDB_ROOT_USERNAME=${MONGODB_USERNAME:-}'
-            - 'MONGODB_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD:-}'
+        env_file:
+          ./mongo.env
         volumes:
             - 'data-mongodb:/data/db'
         ports:
@@ -74,8 +73,6 @@ services:
         image: 'redis:alpine'
         container_name: redis
         restart: unless-stopped
-        ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
             - 'data-redis:/data'
         networks:
