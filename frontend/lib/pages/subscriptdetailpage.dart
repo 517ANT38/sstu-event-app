@@ -10,7 +10,7 @@ class SubscriptionDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${subscription.firstName} ${subscription.secondName}'),
+        title: Text(subscription.nameEvent!),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,7 +30,7 @@ class SubscriptionDetailPage extends StatelessWidget {
             const SizedBox(height: 8),
             subscription.toClass != null ? Text('Классы: с ${subscription.fromClass} по ${subscription.toClass}') : Text('Класс: ${subscription.fromClass}'),
             const SizedBox(height: 8),
-            Text('Мероприятие: ${subscription.idEvent}'),
+            Text('Мероприятие: ${subscription.nameEvent}'),
           ],
         ),
       ),

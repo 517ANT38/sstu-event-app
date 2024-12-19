@@ -22,7 +22,9 @@ class Sharedpreferencesservice {
   Future<void> addSubscriptions(EventRequest subscription) async {
   final prefs = await SharedPreferences.getInstance();
   List<String> subscriptionData = (prefs.getStringList('subscriptions')) ?? [];
-  subscriptionData.add(json.encode(subscription));
+  final subDict = subscription.toJson();
+  subDict['nameEvent'] = subscription.nameEvent;
+  subscriptionData.add(json.encode(subDict));
   await prefs.setStringList('subscriptions', subscriptionData);
 }
   

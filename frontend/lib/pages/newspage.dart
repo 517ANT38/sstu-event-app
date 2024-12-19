@@ -47,7 +47,7 @@ class NewsPage extends StatelessWidget {
                   child: TextButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => EventForm(idEvent: idEvent)));
+                            builder: (context) => EventForm(idEvent: idEvent,nameEvent:model.title)));
                       },
                       child: const Text("Подписаться"))),
               const SizedBox(height: 20)

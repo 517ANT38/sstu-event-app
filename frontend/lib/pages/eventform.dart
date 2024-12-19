@@ -11,8 +11,9 @@ import 'package:sstu_event_app/services/sharedpreferencesservice.dart';
 
 class EventForm extends StatefulWidget {
   final String idEvent;
+  final String nameEvent;
 
-  const EventForm({super.key, required this.idEvent});
+  const EventForm({super.key, required this.idEvent, required this.nameEvent});
 
   @override
   State<StatefulWidget> createState() {
@@ -284,6 +285,7 @@ class EventFormState extends State<EventForm> {
                                     });
                               } else {
                                 final evreq =EventRequest(
+                                  nameEvent: widget.nameEvent,
                                     secondName: secondNameController.text,
                                     firstName: firstNameController.text,
                                     middleName: thirdNameController.text,

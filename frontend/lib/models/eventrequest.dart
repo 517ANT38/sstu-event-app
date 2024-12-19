@@ -9,8 +9,9 @@ class EventRequest {
   final int? toClass;
   final String idEvent;
   final bool isRepresentative;
+  String? nameEvent;
 
-  EventRequest(
+  EventRequest( 
       {required this.secondName,
       required this.firstName,
       this.middleName,
@@ -20,7 +21,8 @@ class EventRequest {
       required this.fromClass,
       this.toClass,
       required this.idEvent,
-      required this.isRepresentative
+      required this.isRepresentative,
+      this.nameEvent
       });
 
   factory EventRequest.fromJson(Map<String, dynamic> data) {
@@ -35,7 +37,8 @@ class EventRequest {
         'fromClass': int fromClass,
         'toClass': int? toClass,
         'idEvent': String idEvent,
-        'isRepresentative':bool isRepresentative
+        'isRepresentative':bool isRepresentative,
+        'nameEvent': String? nameEvent
       } =>
         EventRequest(
             secondName: secondName,
@@ -47,7 +50,8 @@ class EventRequest {
             fromClass: fromClass,
             toClass: toClass,
             idEvent: idEvent,
-            isRepresentative: isRepresentative
+            isRepresentative: isRepresentative,
+            nameEvent: nameEvent
             ),
       _ => throw const FormatException("Failed to load EventRequest")
     };

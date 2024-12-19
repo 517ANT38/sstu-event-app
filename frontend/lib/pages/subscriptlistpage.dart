@@ -39,9 +39,9 @@ class _SubscriptionListPageState extends State<SubscriptionListPage> {
               itemCount: subscriptions.length,
               itemBuilder: (context, index) {
                 final subscription = subscriptions[index];
+                subscription.nameEvent = subscription.nameEvent??"Мероприятие ${index+1}";
                 return ListTile(
-                  title: Text('${subscription.firstName} ${subscription.secondName}'),
-                  subtitle: Text(subscription.edu),
+                  title: Text(subscription.nameEvent!),
                   onTap: () {
                     Navigator.push(
                       context,
