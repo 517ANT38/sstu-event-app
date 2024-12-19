@@ -284,21 +284,21 @@ class EventFormState extends State<EventForm> {
                                     });
                               } else {
                                 final evreq =EventRequest(
-                                        secondName: secondNameController.text,
-                                        firstName: firstNameController.text,
-                                        middleName: thirdNameController.text,
-                                        edu: schoolController.text,
-                                        phone: phoneController.text,
+                                    secondName: secondNameController.text,
+                                    firstName: firstNameController.text,
+                                    middleName: thirdNameController.text,
+                                    edu: schoolController.text,
+                                    phone: phoneController.text,
                                         countChild:
                                             int.parse(countController.text),
                                         fromClass:
                                             int.parse(class1Controller.text),
                                         toClass: class2Controller
                                                 .text.isNotEmpty
-                                            ? int.parse(class2Controller.text)
-                                            : null,
-                                        idEvent: widget.idEvent,
-                                        isRepresentative: _isChecked);
+                                        ? int.parse(class2Controller.text)
+                                        : null,
+                                    idEvent: widget.idEvent,
+                                    isRepresentative: _isChecked);
                                 final serv = Sharedpreferencesservice.get();
                                 EventRequestsAgent.add(evreq)
                                     .then((value) {
@@ -321,6 +321,7 @@ class EventFormState extends State<EventForm> {
                             child: const Text("Отправить")),
                       )
                     ]),
+                    fInterval
                   ],
                 ),
               )),

@@ -23,28 +23,36 @@ class NewsPage extends StatelessWidget {
       ),
       body: Center(
         child: SingleChildScrollView(
-            child: Column(
-          children: [
-            Text(model.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-            const SizedBox(height: 20),
-            Text(model.description),
-            Text('${model.date.day}.${model.date.month}.${model.date.year}'),
-            if (model.imgURLs.isNotEmpty)
-              Image(image: NetworkImage(model.imgURLs[0])),
-            // if (model.imgURLs.length > 1)
-            //   ...model.imgURLs.sublist(1).map((e) => Image(image: NetworkImage(e)))
-            const SizedBox(height: 20),
-            Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    borderRadius: BorderRadius.circular(15)),
-                child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => EventForm(idEvent: idEvent)));
-                    },
-                    child: const Text("Подписаться")))
-          ],
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              Text(
+                model.title,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              Text(model.description),
+              Text('${model.date.day}.${model.date.month}.${model.date.year}'),
+              if (model.imgURLs.isNotEmpty)
+                Image(image: NetworkImage(model.imgURLs[0])),
+              // if (model.imgURLs.length > 1)
+              //   ...model.imgURLs.sublist(1).map((e) => Image(image: NetworkImage(e)))
+              const SizedBox(height: 20),
+              Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => EventForm(idEvent: idEvent)));
+                      },
+                      child: const Text("Подписаться"))),
+              const SizedBox(height: 20)
+            ],
+          ),
         )),
       ),
       bottomNavigationBar: const BottomNavBar(),
