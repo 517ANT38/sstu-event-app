@@ -31,10 +31,10 @@ class _SubscriptionListPageState extends State<SubscriptionListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Subscriptions'),
+        title: const Text('Ваши подписки'),
       ),
       body: subscriptions.isEmpty
-          ? const Center(child: Text('No subscriptions found.'))
+          ? const Center(child: Text('Подписки не найдены.'))
           : ListView.builder(
               itemCount: subscriptions.length,
               itemBuilder: (context, index) {
