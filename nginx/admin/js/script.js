@@ -51,7 +51,7 @@ function renderTable(data) {
             <td>${item.phone}</td>
             <td>${item.countChild}</td>
             <td>${item.fromClass}</td>
-            <td>${item.toClass}</td>
+            <td>${item.toClass?item.toClass:"Не указано"}</td>
             <td>${new Date(item.created_at).toLocaleString('ru',options)}</td>
         `;
         tableBody.appendChild(row);
